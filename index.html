@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home | Aryan Sharma</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="logo">Aryan Sharma</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="scla110.html">SCLA 110</a></li>
+        <li><a href="scla111.html">SCLA 111</a></li>
+        <li><a href="resume.html">Resume</a></li>
+        <li><a href="album.html">Album</a></li>
+      </ul>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <main id="home-hero">
+    <h1>Aryan Sharma <small></small></h1>
+    <div class="profile-photo-wrapper">
+      <img src="images/AryanPhoto.jpg" alt="Professional headshot of Aryan Sharma" class="profile-photo">
+    </div>
+    <p class="bio">I’m Aryan Sharma, an Agricultural Systems Management major at Purdue University. Over my first year here, I’ve explored intercultural communication through SCLA courses, tackled data-driven projects in ASM labs, and pursued my passion for travel and coding. This website highlights how I’ve grown academically, culturally, and personally.</p>
+  </main>
+
+  <footer>
+    © 2025. Built from scratch by Aryan Sharma.
+  </footer>
+
+  <script>
+    document.querySelector('.nav-toggle').addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.toggle('show');
+    });
+  </script>
+
+</body>
+</html>

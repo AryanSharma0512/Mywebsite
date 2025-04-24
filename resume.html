@@ -1,0 +1,50 @@
+<!-- resume.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume | Aryan Sharma</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="logo">Aryan Sharma</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="scla110.html">SCLA&nbsp;110</a></li>
+        <li><a href="scla111.html">SCLA&nbsp;111</a></li>
+        <li><a href="resume.html">Resume</a></li>
+        <li><a href="album.html">Album</a></li>
+      </ul>
+      <button class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="container resume">
+    <h2 class="page-title">Resume</h2>
+    <!-- Embedded PDF Resume Container -->
+    <section class="embedded-resume">
+      <h3>Download or view my resume</h3>
+      <object data="pdf/Aryan_Sharma_Resume.pdf" type="application/pdf" width="100%" height="800px">
+        <p>Your browser does not support embedded PDFs. Please <a href="pdf/Aryan_Sharma_Resume.pdf">download the resume</a> to view it.</p>
+      </object>
+    </section>
+  </main>
+
+  <footer>
+    © 2025. Built from scratch by Aryan Sharma.
+  </footer>
+
+  <script>
+    document.querySelector('.nav-toggle').addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.toggle('show');
+    });
+  </script>
+</body>
+</html>
