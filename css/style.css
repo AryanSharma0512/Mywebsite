@@ -179,23 +179,27 @@ header {
   position: relative;
   padding: 2rem 0;
   margin: 2rem 0;
+  padding-top: 2rem; /* extra space at the top if needed */
 }
 .timeline h3 {
   text-align: center;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
   color: #007acc;
+  position: relative;
+  z-index: 2;
 }
 /* Glowing vertical line */
 .timeline-line {
   position: absolute;
   left: 50%;
-  top: 0;
+  top: calc(1rem + 1em);  /* adjust this value so the line starts after the heading */
   bottom: 0;
   width: 4px;
   background: linear-gradient(to bottom, rgba(0,122,204,0.7), rgba(0,255,255,0.7));
   box-shadow: 0 0 15px rgba(0,255,255,0.5);
   transform: translateX(-50%);
+  z-index: 1;
 }
 /* Each timeline item */
 .timeline-item {
@@ -377,4 +381,59 @@ footer:hover {
 
 .modal-close:hover {
   background: #005fa3;
+}
+
+/* Scale down images inside articles' figures */
+article figure img {
+  max-width: 80%;  /* or use a fixed maximum, e.g. 400px */
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.skills-block {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 1rem;
+}
+.skills-block h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: #007acc;
+}
+.skills-block p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.skill-group {
+  flex: 1 1 250px;
+}
+.skill-group h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.icons img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  transition: transform 0.2s;
+}
+.icons img:hover {
+  transform: scale(1.2);
+}
+@media (max-width: 600px) {
+  .skill-list {
+    flex-direction: column;
+  }
 }
