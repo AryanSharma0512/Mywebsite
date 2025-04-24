@@ -1,3 +1,8 @@
+/* Add this at the top or in your HTML <head> */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+/* Import Roboto with bold weight */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
 /* Basic Reset */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { font-size: 16px; }
@@ -43,19 +48,19 @@ header {
   z-index: 100;
 }
 .navbar {
-  max-width: 900px;
-  margin: auto;
-  display: flex;
-  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
   justify-content: space-between;
   padding: 1rem;
 }
 .logo {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   color: #333;
   text-decoration: none;
-  transition: color .3s, transform .3s;
+  font-family: 'Bodoni Moda SC', serif;  /* Use the new font */
+  transition: color 0.3s, transform 0.3s;
 }
 .logo:hover {
   color: #007acc;
@@ -161,10 +166,10 @@ header {
 
 /* Keep the hover effect on the image */
 .profile-photo:hover {
-  transform: scale(1.1) rotate(5deg);
+  transform: scale(1.4) rotate(4deg);
 }
 .bio {
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   line-height: 1.6;
   max-width: 600px;
   margin: 0.5rem auto;
@@ -431,7 +436,7 @@ article figure img {
   transition: transform 0.2s;
 }
 .icons img:hover {
-  transform: scale(1.3);
+  transform: scale(1.5);
 }
 @media (max-width: 600px) {
   .skill-list {
@@ -460,3 +465,235 @@ article figure img {
   font-family: 'Georgia', serif;
   color: #556B2F;  /* olive-ish color */
 }
+
+/* Style the "Projects" title to match other section titles */
+.projects h2 {
+  color: #556B2F; /* Olive-ish color */
+  font-family: 'Georgia', serif;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ---------------- Projects Section ---------------- */
+.projects {
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+.projects h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #222;
+  text-align: center;
+}
+.project-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  flex-direction: row; /* default: image on left, content on right */
+}
+
+/* Alternate: even-numbered project items have reverse layout */
+.projects .project-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+.project-img {
+  flex: 1 1 40%;
+}
+.project-img img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.project-img img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+.project-content {
+  flex: 1 1 55%;
+}
+.project-content h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.project-meta {
+  font-size: 0.9rem;
+  color: #666;
+}
+.project-content p {
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+.project-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #007acc;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.project-link:hover {
+  color: #005fa3;
+}
+.project-skills {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+.project-skills li {
+  position: relative;
+  padding-left: 1.2rem;
+  line-height: 1.4;
+}
+.project-skills li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #007acc;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+@media (max-width: 768px) {
+  .project-item,
+  .project-item.reverse {
+    flex-direction: column;
+  }
+  .project-img,
+  .project-content {
+    width: 100%;
+  }
+}
+
+/* Modal Overlay & Content for Project Images */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.modal-content img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #007acc;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.modal-close:hover {
+  background: #005fa3;
+}
+
+/* Optional: Import a curvy font; for example, Pacifico from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+.project-caption {
+  text-align: center;
+  color: grey;
+  font-family: 'Pacifico', cursive, sans-serif;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+/* Hero Section Modifications */
+#home-hero .hero-title {
+  font-size: 4rem;                   /* Increased size */
+  font-family: 'Bebas Neue', sans-serif; /* Wider, bold style */
+  text-shadow: 0 0 10px rgba(255,255,255,0.8); /* Slight glow */
+  letter-spacing: 2px;               /* Extra spacing for a wider look */
+  margin: 0;  /* Remove extra vertical spacing */
+  margin-top: -2rem;
+  margin-bottom: 0.5rem;
+  text-transform: none;
+}
+
+#home-hero .intro-text {
+  text-align: left;
+  font-size: 1.5rem;
+  color: #000;
+  margin-top: 1rem;
+  margin-bottom: 0.2rem;  /* Reduced bottom margin */
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-left: 12.8rem;  /* Reduced indentation */
+  padding-right: 20px;
+  text-transform: none;
+  position: relative; /* so the pseudo-element is positioned relative to the text */
+}
+
+#home-hero .bio {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;                   /* Bold text */
+  font-size: 1.1rem;                  
+  line-height: 1.8;                   /* Increased line-height for more spacing */
+  letter-spacing: 0.5px;              /* Optional: add a little letter spacing */
+  color: #333;
+  max-width: 900px;                   /* Limit width so text wraps earlier */
+  margin: 0.5rem auto;                /* Center the bio block */
+}
+
+/* --------------------------------------------- */
+/* Hover-gif next to the “Hi, I’m” text          */
+/* --------------------------------------------- */
+
+
+#home-hero .hover-gif {
+  position: absolute;
+  top: 50%;
+  left: 100%;           /* start at the end of the text */
+  margin-left: 4px;     /* small gap between text & gif */
+  transform: translate(-447px,-50%);
+  width: 40px;
+  height: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+  padding-left: -12.8rem;  /* Adjusted to match text indentation */
+}
+
+#home-hero .intro-text:hover .hover-gif {
+  opacity: 1;
+}
+
+

@@ -85,3 +85,67 @@ document.querySelectorAll('.timeline-image-wrapper').forEach(wrapper => {
     });
   });
 });
+
+// Modal for project images in resume.html
+document.querySelectorAll('.projects .project-img img').forEach(img => {
+  img.addEventListener('click', () => {
+    // Create modal overlay element
+    const modalOverlay = document.createElement('div');
+    modalOverlay.classList.add('modal-overlay');
+
+    // Create modal content element
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+
+    // Clone the clicked image for enlargement
+    const modalImg = img.cloneNode(true);
+    modalImg.style.width = '100%';
+    let zoomLevel = 1; // initial scale
+
+    modalContent.appendChild(modalImg);
+
+    // Add double-click zoom event to the modal image
+    modalImg.addEventListener('dblclick', function(e) {
+      const rect = modalImg.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      // Calculate the click position as percentages
+      const originX = (offsetX / rect.width) * 100;
+      const originY = (offsetY / rect.height) * 100;
+      modalImg.style.transformOrigin = originX + '% ' + originY + '%';
+
+      // Toggle between zoomed in (scale 2) and original view (scale 1)
+      zoomLevel = (zoomLevel === 1) ? 2 : 1;
+      modalImg.style.transform = `scale(${zoomLevel})`;
+    });
+
+    // Create and append the close button
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'X';
+    closeButton.classList.add('modal-close');
+    modalContent.appendChild(closeButton);
+
+    // Append modal content to overlay and overlay to body
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
+
+    // Trigger fade-in by adding active class after a short delay
+    setTimeout(() => {
+      modalOverlay.classList.add('active');
+    }, 10);
+
+    // Remove modal when clicking the close button
+    closeButton.addEventListener('click', () => {
+      modalOverlay.classList.remove('active');
+      setTimeout(() => modalOverlay.remove(), 300);
+    });
+
+    // Also remove modal if the user clicks outside the modal content
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('active');
+        setTimeout(() => modalOverlay.remove(), 300);
+      }
+    });
+  });
+});

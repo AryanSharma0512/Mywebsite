@@ -1,13 +1,15 @@
 <!-- resume.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Resume | Aryan Sharma</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resume | Aryan Sharma</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet">
+  </head>
   <header>
     <nav class="navbar">
       <a href="index.html" class="logo">Aryan Sharma</a>
@@ -54,28 +56,142 @@
         <div class="skill-group">
           <h3>Languages</h3>
           <div class="icons">
-            <img src="images/python.png" alt="Python" title="Python">
-            <img src="images/java-script.png" alt="JavaScript" title="JavaScript">
-            <img src="images/web.png" alt="Java" title="Java">
-            <img src="images/html.png" alt="HTML5" title="HTML5">
-            <img src="images/css-3.png" alt="CSS3" title="CSS3">
+            <a href="https://www.python.org" target="_blank">
+              <img src="images/python.png" alt="Python" title="Python">
+            </a>
+            <a href="https://www.javascript.com" target="_blank">
+              <img src="images/java-script.png" alt="JavaScript" title="JavaScript">
+            </a>
+            <a href="https://www.php.net" target="_blank">
+              <img src="images/web.png" alt="PHP" title="PHP">
+            </a>
+            <a href="https://www.w3.org/TR/html5" target="_blank">
+              <img src="images/html.png" alt="HTML5" title="HTML5">
+            </a>
+            <a href="https://www.w3.org/Style/CSS/Overview.en.html" target="_blank">
+              <img src="images/css-3.png" alt="CSS3" title="CSS3">
+            </a>
             <!-- add as many as you like -->
           </div>
         </div>
         <div class="skill-group">
           <h3>Tools</h3>
           <div class="icons">
-            <img src="images/git.png" alt="Git" title="Git">
-            <img src="images/social.png" alt="github" title="github">
-            <img src="images/icons8-nodejs-48.png" alt="nodejs" title="nodejs">
-            <img src="images/icons8-npm-48.png" alt="npm" title="npm">
-            <img src="images/xampp.png" alt="Xampp" title="Xampp">
+            <a href="https://git-scm.com" target="_blank">
+              <img src="images/git.png" alt="Git" title="Git">
+            </a>
+            <a href="https://github.com" target="_blank">
+              <img src="images/social.png" alt="GitHub" title="GitHub">
+            </a>
+            <a href="https://nodejs.org" target="_blank">
+              <img src="images/icons8-nodejs-48.png" alt="Node.js" title="Node.js">
+            </a>
+            <a href="https://www.npmjs.com" target="_blank">
+              <img src="images/icons8-npm-48.png" alt="npm" title="npm">
+            </a>
+            <a href="https://www.nginx.com" target="_blank">
+              <img src="images/icons8-nginx-48.png" alt="nginx" title="nginx">
+            </a>
+            <a href="https://code.visualstudio.com" target="_blank">
+              <img src="images/icons8-vs-code-48.png" alt="VS code" title="VS code">
+            </a>
+            <a href="https://reactjs.org" target="_blank">
+              <img src="images/icons8-react-js-40.png" alt="React-js" title="React-js">
+            </a>
+            <a href="https://www.apachefriends.org" target="_blank">
+              <img src="images/xampp.png" alt="Xampp" title="Xampp">
+            </a>
+            <a href="https://firebase.google.com" target="_blank">
+              <img src="images/icons8-firebase-48.png" alt="Firebase" title="Firebase">
+            </a>
+            <a href="https://nextjs.org" target="_blank">
+              <img src="images/nextjs-icon.png" alt="nextjs" title="nextjs">
+            </a>
             <!-- etc. -->
           </div>
         </div>
       </div>
     </section>
     
+    <!-- Projects Section -->
+    <section class="projects">
+      <h2>Projects</h2>
+
+      <!-- Secure Chat Platform -->
+      <div class="project-item reverse">
+        <div class="project-img">
+          <img src="images/chatweb.png" alt="Encrypted Chat Platform">
+          <div class="project-caption">Screenshot showcasing the platform’s session functions file.</div>
+        </div>
+        <div class="project-content">
+          <h3>
+            Secure Chat Platform 
+            <span class="project-meta">Beta • Since 2025</span>
+          </h3>
+          <p>
+            Leading a 5-person team to build a cross-platform messaging app using Signal Protocol (via libsignal-protocol.js), React &amp; Firebase.  
+            Features include end-to-end encryption with forward secrecy, multi-device sync, and encrypted group chats.  
+            We follow 2-week sprints, write full test coverage, and are targeting both enterprise and privacy-focused users.
+          </p>
+          <a href="https://github.com/AryanSharma0512/PurdueProject" class="project-link">GitHub repo (private)</a>
+          <ul class="project-skills">
+            <li>End-to-end encryption</li>
+            <li>CI/CD &amp; unit testing</li>
+            <li>React &amp; Firebase</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Ticketing Management System -->
+      <div class="project-item">
+        <div class="project-img">
+          <img src="images/ticketing.jpg" alt="Ticketing Management System">
+          <div class="project-caption">A preview placeholder of the generated ticket output.</div>
+        </div>
+        <div class="project-content">
+          <h3>
+            Ticketing Management System 
+            <span class="project-meta">In Progress • Since 2025</span>
+          </h3>
+          <p>
+            I’m building a modular, agile ticketing platform tailored for travel agencies and corporate clients.  
+            Powered by Node.js, Express &amp; MySQL, it offers real-time booking, dynamic pricing modules, user roles &amp; permissions, 
+            and an admin dashboard to manage the full ticket lifecycle.  
+            Designed for easy client-specific tweaks—and with an eye toward open-source release or commercial licensing.
+          </p>
+          <a href="https://github.com/AryanSharma0512/Ticket_display" class="project-link">GitHub repo (private)</a>
+          <ul class="project-skills">
+            <li>Agile development</li>
+            <li>REST API design</li>
+            <li>Role-based auth</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Accounting Software -->
+      <div class="project-item">
+        <div class="project-img">
+          <img src="images/AdminPanel.jpg" alt="Accounting Software">
+        </div>
+        <div class="project-content">
+          <h3>
+            Accounting Software 
+            <span class="project-meta">Standalone • 2025</span>
+          </h3>
+          <p>
+            Developed a modular finance-backend system in PHP, MySQL &amp; JavaScript for invoice management, payment tracking, and financial reporting.  
+            Originally a standalone project, it’s now fully integrated into my Ticketing Management System—providing end-to-end transaction processing and automated ledgers.
+          </p>
+          <a href="https://github.com/AryanSharma0512/Ticket_display/tree/main/V5.0/Accounting_software" class="project-link">GitHub repo (private)</a>
+          <ul class="project-skills">
+            <li>Financial database design</li>
+            <li>Server-side scripting</li>
+            <li>API integration</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <!-- Embedded PDF Resume Container -->
     <section class="embedded-resume">
       <h3>Download or view my resume</h3>
@@ -94,5 +210,6 @@
       document.querySelector('.nav-links').classList.toggle('show');
     });
   </script>
+  <script src="js/script.js"></script>
 </body>
 </html>
