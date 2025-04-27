@@ -169,3 +169,67 @@ document.querySelectorAll('.projects .project-img img').forEach(img => {
     });
   });
 });
+
+// Tap to open & double-tap to zoom for framed-photo images
+document.querySelectorAll('.framed-photo img').forEach(img => {
+  img.addEventListener('click', (e) => {
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+
+    // Create content wrapper
+    const content = document.createElement('div');
+    content.className = 'modal-content';
+
+    // Clone the image
+    const modalImg = img.cloneNode();
+    modalImg.style.transform = 'scale(1)';
+    modalImg.dataset.zoomed = 'false';
+
+    // Double-tap / double-click zoom handler
+    modalImg.addEventListener('dblclick', (ev) => {
+      const zoomed = modalImg.dataset.zoomed === 'true';
+      if (!zoomed) {
+        // calculate click position within image
+        const rect = modalImg.getBoundingClientRect();
+        const offsetX = ev.clientX - rect.left;
+        const offsetY = ev.clientY - rect.top;
+        const originX = (offsetX / rect.width) * 100;
+        const originY = (offsetY / rect.height) * 100;
+        modalImg.style.transformOrigin = `${originX}% ${originY}%`;
+        modalImg.style.transform = 'scale(2)';
+        modalImg.dataset.zoomed = 'true';
+        modalImg.style.cursor = 'zoom-out';
+      } else {
+        modalImg.style.transform = 'scale(1)';
+        modalImg.dataset.zoomed = 'false';
+        modalImg.style.cursor = 'zoom-in';
+      }
+    });
+
+    // Close button
+    const close = document.createElement('button');
+    close.className = 'modal-close';
+    close.textContent = '×';
+    close.addEventListener('click', () => {
+      overlay.classList.remove('active');
+      setTimeout(() => overlay.remove(), 300);
+    });
+
+    // Clicking outside content also closes
+    overlay.addEventListener('click', (ev) => {
+      if (ev.target === overlay) {
+        close.click();
+      }
+    });
+
+    // Assemble & show
+    content.appendChild(modalImg);
+    content.appendChild(close);
+    overlay.appendChild(content);
+    document.body.appendChild(overlay);
+
+    // Force reflow then fade in
+    requestAnimationFrame(() => overlay.classList.add('active'));
+  });
+});

@@ -466,13 +466,6 @@ article figure img {
   color: #556B2F;  /* olive-ish color */
 }
 
-/* Style the "Projects" title to match other section titles */
-.projects h2 {
-  color: #556B2F; /* Olive-ish color */
-  font-family: 'Georgia', serif;
-  font-size: 1.5rem;
-  margin-bottom: 0.75rem;
-}
 
 /* ---------------- Projects Section ---------------- */
 .projects {
@@ -481,9 +474,11 @@ article figure img {
   padding: 0 1rem;
 }
 .projects h2 {
-  font-size: 2rem;
+  color: #000; /* Olive-ish color */
+  font-family: 'Georgia', serif;
+  font-size: 57px;
+  margin-bottom: 0.75rem;
   margin-bottom: 1.5rem;
-  color: #222;
   text-align: center;
 }
 .project-item {
@@ -839,9 +834,9 @@ article figure img {
   padding: 0 1rem;
 }
 .education-timeline .timeline-title {
-  font-size: 64px;          /* Titles: 64–70 */
+  font-size: 57px;          /* Titles: 64–70 */
   text-align: center;
-  color: #556B2F;           /* Olive-ish to match your theme */
+  color: #000;           /* Olive-ish to match your theme */
   font-family: 'Georgia', serif;
   margin-bottom: 1.5rem;
   top: 100px;
