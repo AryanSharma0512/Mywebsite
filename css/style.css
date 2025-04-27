@@ -988,3 +988,81 @@ article figure img {
     grid-template-columns: 1fr;
   }
 }
+
+.album-video {
+  width: 105%;
+  padding: -2px;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* ————— SCLA 110 Page Figures ————— */
+
+/* ——— Block-level centering & framing ——— */
+/* ————— Simple Block-Centered Frame ————— */
+.framed-photo {
+  /* block + auto margins ensures perfect centering */
+  display: block;
+  margin: 2rem auto;
+  width: 100%;
+  max-width: 360px;           /* control how wide you want it */
+  padding: 12px;
+  border-radius: 16px;
+
+  /* double-layer gradient border trick */
+  background:
+    linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #ff6ec4, #7873f5) border-box;
+  border: 4px solid transparent;
+
+  /* hover pop */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.framed-photo img {
+  display: block;             /* remove inline whitespace */
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+
+  /* zoom on double-click */
+  transition: transform 0.4s ease;
+}
+
+.framed-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 16px;
+  color: #555;
+  text-align: center;
+}
+
+/* hover glow */
+.framed-photo:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(120,115,245,0.6);
+}
+
+/* double-click/tap zoom */
+.framed-photo img:active {
+  transform: scale(1.5);
+  z-index: 999;
+}
+/* Add this to your CSS */
+.scla110-container figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* This centers the image and caption */
+  margin: 1.5rem auto;  /* auto for horizontal centering */
+  max-width: 80%;       /* Prevent figures from being too wide */
+}
+
+.scla110-container figure img {
+  width: 60%; /* Adjust this percentage as needed */
+  height: auto; /* Maintains aspect ratio */
+  max-width: 100%; /* Ensures it doesn't exceed container */
+  display: block;
+  margin: 0 auto;
+}
