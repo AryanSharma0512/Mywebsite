@@ -1,28 +1,146 @@
-<!-- album.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Album | Your Name</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Album | Aryan Sharma</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- include same header/nav -->
-  <main class="container">
-    <h2 class="page-title">[Creative Title for Album]</h2>
-    <p>[50–100 word introduction describing this page]</p>
-    <!-- At least 4 items -->
-    <article>
-      <h3>Activity Title</h3>
-      <time datetime="2025-04">April 2025</time>
-      <figure>
-        <img src="images/album1.jpg" alt="Description of album image">
-        <figcaption>[50–100 words explaining the image]</figcaption>
+
+  <!-- Header (same as other pages) -->
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="logo">Aryan Sharma</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="scla110.html">SCLA 110</a></li>
+        <li><a href="scla111.html">SCLA 111</a></li>
+        <li><a href="resume.html">Resume</a></li>
+        <li><a href="album.html">Album</a></li>
+      </ul>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <main class="container album-page">
+    <!-- Creative Title -->
+    <h2 class="page-title">Moments &amp; Memories</h2>
+
+    <!-- Introduction: 50–100 words -->
+    <p class="intro-text">
+      A visual journey through my first year at Purdue University—capturing classroom highlights, intercultural events, and personal milestones. From exploring campus traditions to celebrating academic achievements, each snapshot reflects a story of growth, discovery, and connection. Dive in to see how these experiences shaped my time as an Agricultural Systems Management student.
+    </p>
+
+    <!-- 3×3 Grid of album items -->
+    <div class="album-grid">
+
+      <!-- Frame 1 -->
+      <figure class="album-frame">
+        <h3 class="frame-title">Cultural Festival</h3>
+        <time class="frame-date" datetime="2024-10">October 2024</time>
+        <img src="images/album1.jpg" alt="Students at cultural festival">
+        <figcaption class="frame-caption">
+          At Purdue’s International Festival, I sampled cuisines, watched dance performances, and interviewed peers about their traditions, deepening my intercultural understanding.
+        </figcaption>
       </figure>
-    </article>
-    <!-- Repeat for remaining items -->
+
+      <!-- Frame 2 -->
+      <figure class="album-frame">
+        <h3 class="frame-title">Lab Presentation</h3>
+        <time class="frame-date" datetime="2025-02">February 2025</time>
+        <img src="images/album2.jpg" alt="Delivering a lab presentation">
+        <figcaption class="frame-caption">
+          Presenting my data-driven project on crop yield optimization in the ASM lab taught me how to communicate complex results clearly to an academic audience.
+        </figcaption>
+      </figure>
+
+      <!-- Frame 3 -->
+      <figure class="album-frame">
+        <h3 class="frame-title">Video Blog Shoot</h3>
+        <time class="frame-date" datetime="2025-03">March 2025</time>
+        <img src="images/album3.jpg" alt="Recording video blog">
+        <figcaption class="frame-caption">
+          Filming my SCLA video blog assignment improved my public speaking skills and helped me convey intercultural reflections in a dynamic, multimedia format.
+        </figcaption>
+      </figure>
+
+      <!-- Frame 4 -->
+      <figure class="album-frame">
+        <h3 class="frame-title">Server Setup</h3>
+        <time class="frame-date" datetime="2024-11">November 2024</time>
+        <img src="images/album4.jpg" alt="Configuring a server">
+        <figcaption class="frame-caption">
+          During my summer internship prep, I set up and secured an Apache/MySQL server—laying the groundwork for the accounting backend of my ticketing project.
+        </figcaption>
+      </figure>
+
+      <!-- Frame 5 -->
+      <figure class="album-frame">
+        <h3 class="frame-title">Field Trip</h3>
+        <time class="frame-date" datetime="2024-09">September 2024</time>
+        <img src="images/album5.jpg" alt="Visiting a research farm">
+        <figcaption class="frame-caption">
+          Our SCLA 110 field trip to the Purdue research farm gave hands-on insight into sustainable agriculture practices and team-based data collection.
+        </figcaption>
+      </figure>
+
+      <!-- Frame 6 -->
+      <figure class="album-frame">
+        <h3 class="frame-title">Hackathon Win</h3>
+        <time class="frame-date" datetime="2025-01">January 2025</time>
+        <img src="images/album6.jpg" alt="Team at hackathon">
+        <figcaption class="frame-caption">
+          Collaborating with classmates, we built an AI-driven crop advisor app at our college hackathon—and placed in the top three for innovation.
+        </figcaption>
+      </figure>
+
+      <!-- Frame 7 -->
+      <figure class="album-frame">
+        <h3 class="frame-title">Club Meetup</h3>
+        <time class="frame-date" datetime="2024-12">December 2024</time>
+        <img src="images/album7.jpg" alt="Science club discussion">
+        <figcaption class="frame-caption">
+          As President of the High School Science Club, I joined Purdue’s STEM meetup—networking with researchers and sharing insights on emerging technologies.
+        </figcaption>
+      </figure>
+
+      <!-- Frame 8 -->
+      <figure class="album-frame">
+        <h3 class="frame-title">Cooking Night</h3>
+        <time class="frame-date" datetime="2025-04">April 2025</time>
+        <img src="images/album8.jpg" alt="Cooking with friends">
+        <figcaption class="frame-caption">
+          Hosting an international potluck in my dorm kitchen allowed me to share a taste of home and learn new recipes from friends around the world.
+        </figcaption>
+      </figure>
+
+      <!-- Frame 9 -->
+      <figure class="album-frame">
+        <h3 class="frame-title">Graduation Fair</h3>
+        <time class="frame-date" datetime="2025-05">May 2025</time>
+        <img src="images/album9.jpg" alt="Graduation exhibition">
+        <figcaption class="frame-caption">
+          Showcasing my poster on “Intercultural Communication in Ag Tech” at the senior exhibition highlighted my growth and set the stage for future research.
+        </figcaption>
+      </figure>
+
+    </div>
   </main>
+
+  <!-- Footer (same as other pages) -->
+  <footer>
+    © 2025. Built from scratch by Aryan Sharma.
+  </footer>
+
   <script src="js/script.js"></script>
+  <script>
+    document.querySelector('.nav-toggle').addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.toggle('show');
+    });
+  </script>
 </body>
 </html>

@@ -1,24 +1,22 @@
 <!-- scla110.html -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SCLA 110 | Aryan Sharma</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCLA 110 | Aryan Sharma</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
 <body>
 
+  <!-- header (same as other pages) -->
   <header>
     <nav class="navbar">
       <a href="index.html" class="logo">Aryan Sharma</a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="scla110.html">SCLA&nbsp;110</a></li>
-        <li><a href="scla111.html">SCLA&nbsp;111</a></li>
+        <li><a href="scla110.html">SCLA 110</a></li>
+        <li><a href="scla111.html">SCLA 111</a></li>
         <li><a href="resume.html">Resume</a></li>
         <li><a href="album.html">Album</a></li>
       </ul>
@@ -26,28 +24,68 @@
     </nav>
   </header>
 
-  <main class="container">
-    <h2 class="page-title">[Creative Title for SCLA 110]</h2>
+  <main class="scla110-container">
+    <!-- Creative Title -->
+    <h2 class="page-title">Voices and Vision</h2>
+
+    <!-- Overview Paragraph (approx. 170 words) -->
     <section>
-      <p>[One 150–200 word paragraph summarizing what you learned in SCLA 110.]</p>
+      <p class="body-text">
+        In SCLA 110: Foundations of Intercultural Communication, I explored how language shapes our understanding of other cultures and ourselves. Through weekly readings, reflective journals, in-class discussions, and multimedia assignments, I learned to recognize cultural assumptions, analyze communicative strategies, and adapt my voice for diverse audiences. Assignments like video blogs pushed me to practice clear, listener-friendly speech, while my reading journals deepened my critical thinking by linking theory to personal experience. A field-trip ethnography on Purdue’s cultural festival challenged me to observe, document, and interpret social rituals in real time. Collectively, these experiences sharpened my academic writing, bolstered my presentation skills, and laid a foundation for complex intercultural interactions—skills that continue to inform both my coursework and my personal growth as a global communicator.
+      </p>
     </section>
-    <!-- Topics -->
+
+    <!-- Topic 1: Video Blog Assignment -->
     <article>
-      <h3>Topic One Title</h3>
-      <p class="intro">[50–60 words explaining this assignment.]</p>
+      <h3 class="subtitle">Video Blog Introduction</h3>
+      <p class="body-text">
+        For our first video blog, I recorded a two-minute self-introduction focusing on my cultural background and learning goals. This assignment taught me how to storyboard ideas, maintain eye contact on camera, and use concise language to engage viewers. Feedback from peers helped me refine my pacing and tone, building confidence in public digital speaking.
+      </p>
       <figure>
-        <img src="images/scla110_topic1.jpg" alt="Description of image for topic one">
-        <figcaption>Figure 1. Description of image. (YourName, Year) or APA citation.</figcaption>
+        <img src="images/videoblog.jpg" alt="Student recording a video blog">
+        <figcaption>Figure 1. Recording my first video blog. (Aryan Sharma, 2025)</figcaption>
       </figure>
     </article>
-    <!-- Repeat for Topic Two and Topic Three -->
-    <footer>
+
+    <!-- Topic 2: Reading Journal -->
+    <article>
+      <h3 class="subtitle">Reading Journal Reflections</h3>
+      <p class="body-text">
+        Over six weeks, I maintained a reading journal summarizing key concepts from our intercultural communication texts. Each entry (150–200 words) connected theory to examples from my own life, strengthening my analytical writing. This practice improved my ability to synthesize academic ideas and cite sources correctly, preparing me for future research projects.
+      </p>
+      <figure>
+        <img src="images/journal.jpg" alt="Open journal with notes">
+        <figcaption>Figure 2. Excerpt from my reading journal. (Aryan Sharma, 2025)</figcaption>
+      </figure>
+    </article>
+
+    <!-- Topic 3: Campus Ethnography -->
+    <article>
+      <h3 class="subtitle">Campus Ethnography</h3>
+      <p class="body-text">
+        As a final project, I conducted an ethnographic study at Purdue’s International Festival. I observed cultural performances, interviewed participants, and recorded field notes. This hands-on assignment taught me to apply qualitative research methods, respect ethical considerations, and interpret cultural behaviors within their social contexts.
+      </p>
+      <figure>
+        <img src="images/ethnography.jpg" alt="Students at cultural festival">
+        <figcaption>Figure 3. Field notes from Purdue’s International Festival. (Aryan Sharma, 2025)</figcaption>
+      </figure>
+    </article>
+
+    <!-- References -->
+    <section class="references">
       <h4>References</h4>
       <ul>
-        <li>Your citations in APA format</li>
+        <li>Hall, E. T. (1976). <em>Beyond Culture.</em> Anchor Books.</li>
+        <li>Gudykunst, W. B., & Ting‐Toomey, S. (1988). <em>Culture and Interpersonal Communication.</em> Sage.</li>
+        <li>Martin, J. N., &amp; Nakayama, T. K. (2018). <em>Intercultural Communication in Contexts</em> (7th ed.). McGraw‐Hill.</li>
       </ul>
-    </footer>
+    </section>
   </main>
+
+  <!-- footer (same as other pages) -->
+  <footer>
+    © 2025. Built from scratch by Aryan Sharma.
+  </footer>
 
   <script src="js/script.js"></script>
   <script>
@@ -55,5 +93,6 @@
       document.querySelector('.nav-links').classList.toggle('show');
     });
   </script>
+
 </body>
 </html>

@@ -3,33 +3,53 @@ document.querySelector('.nav-toggle')?.addEventListener('click', () => {
 });
 
 document.querySelectorAll('.timeline-image-wrapper').forEach(wrapper => {
+  let popup = null;
+  let fadeTimeout = null;
+
   wrapper.addEventListener('mouseenter', () => {
+    // if a previous popup still exists, remove it immediately
+    if (popup) {
+      clearTimeout(fadeTimeout);
+      popup.remove();
+      popup = null;
+    }
+
     const img = wrapper.querySelector('img');
     if (!img) return;
-    // Clone the image and add the popup class
-    const popup = img.cloneNode(true);
+
+    // clone & style
+    popup = img.cloneNode(true);
     popup.classList.add('popup-image');
-    // Determine a position just outside the frame (to the right)
-    const rect = wrapper.getBoundingClientRect();
     popup.style.position = 'fixed';
+    const rect = wrapper.getBoundingClientRect();
     popup.style.left = (rect.right + 10) + 'px';
-    popup.style.top = rect.top + 'px';
+    popup.style.top  = rect.top + 'px';
+    popup.style.opacity = '0';
+    popup.style.transform = 'scale(0.8)';
     document.body.appendChild(popup);
-    // Trigger the fade in & scale up animation
+
+    // fade in
     requestAnimationFrame(() => {
+      popup.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
       popup.style.transform = 'scale(1)';
       popup.style.opacity = '1';
     });
   });
-  
+
   wrapper.addEventListener('mouseleave', () => {
-    const popup = document.querySelector('.popup-image');
-    if (popup) {
-      // Fade out then remove after transition
-      popup.style.opacity = '0';
-      popup.style.transform = 'scale(0.8)';
-      setTimeout(() => popup.remove(), 600);
-    }
+    if (!popup) return;
+
+    // fade out
+    popup.style.transform = 'scale(0.8)';
+    popup.style.opacity   = '0';
+
+    // remove after our CSS transition duration (0.6s)
+    fadeTimeout = setTimeout(() => {
+      if (popup) {
+        popup.remove();
+        popup = null;
+      }
+    }, 600);
   });
   
   // New: On click, show modal with full image

@@ -697,3 +697,294 @@ article figure img {
 }
 
 
+/* ---------------- SCLA 111 Page Styles ---------------- */
+
+/* Page wrapper (if you want extra padding) */
+.scla111-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Page Title */
+.scla111-container .page-title {
+  font-size: 64px;         /* Titles: 64–70 */
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #007acc;
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+/* Section Subtitles */
+.scla111-container .subtitle {
+  font-size: 32px;         /* Sub-Titles: 30–32 */
+  margin: 2rem 0 0.5rem;
+  color: #222;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Body Text */
+.scla111-container .body-text {
+  font-size: 20px;         /* Body: 18–22 */
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Figures & Captions */
+.scla111-container figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+.scla111-container figure img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+.scla111-container figcaption {
+  font-size: 16px;         /* Caption: 14–16 */
+  color: #555;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* References Block */
+.scla111-container .references {
+  margin-top: 3rem;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+.scla111-container .references h4 {
+  font-size: 32px;         /* Sub-Titles size */
+  margin-bottom: 0.5rem;
+}
+.scla111-container .references ul li {
+  font-size: 16px;         /* References list: 16 */
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+}
+
+/* ---------------- SCLA 110 Page Styles ---------------- */
+
+.scla110-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Page Title */
+.scla110-container .page-title {
+  font-size: 64px;            /* Titles: 64–70 */
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #007acc;
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+/* Topic Subtitles */
+.scla110-container .subtitle {
+  font-size: 32px;            /* Sub-Titles: 30–32 */
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Body Paragraphs */
+.scla110-container .body-text {
+  font-size: 20px;            /* Body: 18–22 */
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Figures & Captions */
+.scla110-container figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+.scla110-container figure img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+.scla110-container figcaption {
+  font-size: 16px;            /* Caption: 14–16 */
+  color: #555;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* References List */
+.scla110-container .references {
+  margin-top: 3rem;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+.scla110-container .references h4 {
+  font-size: 32px;            /* Sub-Title size */
+  margin-bottom: 0.5rem;
+}
+.scla110-container .references ul {
+  list-style: none;
+  padding-left: 0;
+}
+.scla110-container .references ul li {
+  font-size: 16px;            /* References list: 16 */
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+}
+
+
+/* ---------------- Education Timeline Overrides ---------------- */
+.education-timeline {
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+.education-timeline .timeline-title {
+  font-size: 64px;          /* Titles: 64–70 */
+  text-align: center;
+  color: #556B2F;           /* Olive-ish to match your theme */
+  font-family: 'Georgia', serif;
+  margin-bottom: 1.5rem;
+  top: 100px;
+  height: calc(100% - 200px); /* total height minus top+bottom insets */
+  bottom: auto;
+}
+/* shorten only the Education Timeline vertical line */
+.education-timeline .timeline-line {
+  /* scale it to 70% of its full height */
+  transform: translateY(3.9%) scaleY(0.9);
+  transform-origin: top center;
+}
+
+/* the rest of .timeline, .timeline-line, .timeline-item, .timeline-image-wrapper,
+/* and .timeline-content rules are already in your style.css */
+
+/*  Resume Header Styling  */
+.resume-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.resume-name {
+  font-size: 35px;                      /* maximum title size */
+  font-family: 'Lato', serif;
+  color: #2f4f4f;                       /* a deep slate/olive color */
+  margin: 0;
+  line-height: 1;
+}
+
+.resume-subtitle {
+  font-size: 60px;                      /* subtitle size */
+  font-family: 'Roboto', sans-serif;
+  color: #556B2F;                       /* olive-ish accent */
+  margin: 0.25rem 0 0.5rem;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.25rem;
+}
+
+/* accent underline */
+.resume-subtitle::after {
+  content: "";
+  display: block;
+  height: 4px;
+  width: 50%;
+  background: #a3c293;                  /* lighter olive */
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+
+/* ---------------- Album Page Compliance ---------------- */
+/* Page Title */
+.album-page .page-title {
+  font-size: 70px;               /* Titles: 64–70 */
+  text-align: center;
+  margin-top: 2rem;
+  color: #007acc;
+  font-family: 'Bodoni Moda SC', serif;
+}
+
+/* Introduction */
+.album-page .intro-text {
+  font-size: 20px;               /* Body: 18–22 */
+  line-height: 1.6;
+  text-align: center;
+  max-width: 700px;
+  margin: 0.5rem auto 2rem;
+  color: #333;
+}
+
+/* Grid */
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* Frame Titles & Dates */
+.frame-title {
+  font-size: 32px;               /* Sub-Titles: 30–32 */
+  margin: 0.5rem 0 0.25rem;
+  color: #222;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+.frame-date {
+  display: block;
+  font-size: 18px;               /* Body: 18–22 */
+  color: #666;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* Frames */
+.album-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background:
+    linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #ff6ec4, #7873f5) border-box;
+  border: 4px solid transparent;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.album-frame img {
+  width: 100%;
+  display: block;
+}
+
+/* Caption */
+.frame-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 16px;               /* Caption: 14–16 */
+  line-height: 1.4;
+  opacity: 0;
+  transition: opacity 0.3s;
+  text-align: center;
+}
+
+/* Hover */
+.album-frame:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(120,115,245,0.7);
+}
+.album-frame:hover .frame-caption {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .album-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .album-grid {
+    grid-template-columns: 1fr;
+  }
+}
