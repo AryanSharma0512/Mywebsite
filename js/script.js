@@ -233,3 +233,71 @@ document.querySelectorAll('.framed-photo img').forEach(img => {
     requestAnimationFrame(() => overlay.classList.add('active'));
   });
 });
+
+// FOCUS MODE — blur siblings & show caption to the right
+
+// FOCUS + DYNAMIC CAPTION + CLICK-TO-MODAL
+const albumPage = document.querySelector('.album-page');
+document.querySelectorAll('.album-frame').forEach(frame => {
+  const caption = frame.querySelector('.frame-caption');
+  const media = frame.querySelector('img, video');
+
+  frame.addEventListener('mouseenter', () => {
+    // focus mode
+    albumPage.classList.add('frame-focused');
+    frame.classList.add('focused');
+
+    // dynamic caption side
+    const rect = frame.getBoundingClientRect();
+    caption.classList.remove('caption-left', 'caption-right');
+    if (rect.left > window.innerWidth / 2) {
+      caption.classList.add('caption-left');
+    } else {
+      caption.classList.add('caption-right');
+    }
+  });
+
+  frame.addEventListener('mouseleave', () => {
+    // exit focus
+    albumPage.classList.remove('frame-focused');
+    frame.classList.remove('focused');
+    caption.classList.remove('caption-left', 'caption-right');
+  });
+
+  frame.addEventListener('click', () => {
+    // only trigger if this frame is focused
+    if (!frame.classList.contains('focused')) return;
+
+    // build modal
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+
+    const content = document.createElement('div');
+    content.className = 'modal-content';
+
+    // clone the media (img or video)
+    const clone = media.cloneNode(true);
+    clone.removeAttribute('class'); 
+    content.appendChild(clone);
+
+    // close button
+    const close = document.createElement('button');
+    close.className = 'modal-close';
+    close.textContent = '×';
+    close.addEventListener('click', () => {
+      overlay.classList.remove('active');
+      setTimeout(() => overlay.remove(), 300);
+    });
+    content.appendChild(close);
+
+    overlay.appendChild(content);
+    document.body.appendChild(overlay);
+    // fade in
+    requestAnimationFrame(() => overlay.classList.add('active'));
+
+    // click outside content to close
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) close.click();
+    });
+  });
+});

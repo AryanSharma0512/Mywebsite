@@ -889,18 +889,22 @@ article figure img {
 }
 
 /* ---------------- Album Page Compliance ---------------- */
+/* =============================== */
+/* Album Page Styles (FULL REPLACEMENT) */
+/* =============================== */
+
 /* Page Title */
 .album-page .page-title {
-  font-size: 70px;               /* Titles: 64–70 */
+  font-size: 70px;
   text-align: center;
   margin-top: 2rem;
   color: #007acc;
   font-family: 'Bodoni Moda SC', serif;
 }
 
-/* Introduction */
+/* Introduction Text */
 .album-page .intro-text {
-  font-size: 20px;               /* Body: 18–22 */
+  font-size: 20px;
   line-height: 1.6;
   text-align: center;
   max-width: 700px;
@@ -908,7 +912,7 @@ article figure img {
   color: #333;
 }
 
-/* Grid */
+/* Grid Layout */
 .album-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -916,114 +920,208 @@ article figure img {
 }
 
 /* Frame Titles & Dates */
-.frame-title {
-  font-size: 32px;               /* Sub-Titles: 30–32 */
+.album-frame .frame-title {
+  font-size: 32px;
   margin: 0.5rem 0 0.25rem;
   color: #222;
   font-family: 'Roboto', sans-serif;
   text-align: center;
 }
-.frame-date {
+
+.album-frame .frame-date {
   display: block;
-  font-size: 18px;               /* Body: 18–22 */
+  font-size: 18px;
   color: #666;
   margin-bottom: 0.5rem;
   text-align: center;
 }
 
-/* Frames */
+/* Frame Container */
 .album-frame {
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to visible */
   border-radius: 12px;
   background:
     linear-gradient(white, white) padding-box,
     linear-gradient(135deg, #ff6ec4, #7873f5) border-box;
   border: 4px solid transparent;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1;
 }
-.album-frame img {
+
+/* Image & Video inside Frame */
+.album-frame img,
+.album-frame video {
   width: 100%;
   display: block;
+  border-radius: 8px; /* Slightly smaller than frame */
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-/* Caption */
-.frame-caption {
+/* FOCUS MODE */
+.album-page.frame-focused .album-frame:not(.focused) {
+  filter: blur(5px);
+  pointer-events: none;
+  transition: filter 0.3s ease;
+}
+
+/* Focused frame styles */
+.album-frame.focused {
+  filter: none;
+  z-index: 10;
+}
+
+/* Caption Base Styles */
+.album-frame .frame-caption {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #333;
+  background: rgba(255,255,255,0.95);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   position: absolute;
-  bottom: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 220px;
+  max-height: 400px;
+  overflow-y: auto;
+  text-align: left;
+  z-index: 11;
+}
+
+/* Caption Position - Right */
+.album-frame .frame-caption.caption-right {
+  left: calc(100% + 1rem);
+  right: auto;
+}
+
+/* Caption Position - Left */
+.album-frame .frame-caption.caption-left {
+  right: calc(100% + 1rem);
+  left: auto;
+}
+
+/* Show caption when focused */
+.album-frame.focused .frame-caption {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Video Specific Styles */
+.album-video {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Modal Overlay for Zoomed Media */
+.modal-overlay {
+  position: fixed;
+  top: 0;
   left: 0;
   width: 100%;
-  padding: 0.75rem;
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  font-size: 16px;               /* Caption: 14–16 */
-  line-height: 1.4;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   opacity: 0;
-  transition: opacity 0.3s;
-  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 2000;
 }
 
-/* Hover */
-.album-frame:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 15px rgba(120,115,245,0.7);
-}
-.album-frame:hover .frame-caption {
+.modal-overlay.active {
   opacity: 1;
+  pointer-events: auto;
 }
 
-/* Responsive */
+.modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.modal-content img,
+.modal-content video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  cursor: zoom-out;
+}
+
+/* Close Button */
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #fff;
+  color: #333;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 2100;
+}
+
+.modal-close:hover {
+  background: #eee;
+}
+
+/* Responsive Breakpoints */
 @media (max-width: 768px) {
   .album-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  
+  /* On small screens, show caption below the image */
+  .album-frame .frame-caption {
+    position: static !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    max-height: none !important;
+    margin-top: 0.5rem;
+    width: 100% !important;
+    background: rgba(255,255,255,0.9) !important;
+  }
 }
+
 @media (max-width: 480px) {
   .album-grid {
     grid-template-columns: 1fr;
   }
 }
 
-.album-video {
-  width: 105%;
-  padding: -2px;
-  height: auto;
-  display: block;
-  border-radius: 12px;
-  object-fit: cover;
-}
-
-/* ————— SCLA 110 Page Figures ————— */
-
-/* ——— Block-level centering & framing ——— */
-/* ————— Simple Block-Centered Frame ————— */
+/* SCLA 110 Page Figures */
 .framed-photo {
-  /* block + auto margins ensures perfect centering */
   display: block;
   margin: 2rem auto;
   width: 100%;
-  max-width: 360px;           /* control how wide you want it */
+  max-width: 360px;
   padding: 12px;
   border-radius: 16px;
-
-  /* double-layer gradient border trick */
   background:
     linear-gradient(white, white) padding-box,
     linear-gradient(135deg, #ff6ec4, #7873f5) border-box;
   border: 4px solid transparent;
-
-  /* hover pop */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .framed-photo img {
-  display: block;             /* remove inline whitespace */
+  display: block;
   width: 100%;
   height: auto;
   border-radius: 12px;
   object-fit: cover;
-
-  /* zoom on double-click */
   transition: transform 0.4s ease;
 }
 
@@ -1034,13 +1132,12 @@ article figure img {
   text-align: center;
 }
 
-/* hover glow */
+/* Hover effects */
 .framed-photo:hover {
   transform: scale(1.03);
   box-shadow: 0 0 20px rgba(120,115,245,0.6);
 }
 
-/* double-click/tap zoom */
 .framed-photo img:active {
   transform: scale(1.5);
   z-index: 999;
