@@ -1284,6 +1284,24 @@ article figure img {
   transform: translate(-50%, -110%) scale(1.15);
 }
 
+/* Container for marker tooltip */
+.marker-tooltip {
+  position: absolute;
+  background: rgba(255, 255, 150, 0.95);
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  color: #222;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 100;
+  transform: translateX(-50%);
+}
+
 
 .map-legend {
   margin: 1.5rem auto;

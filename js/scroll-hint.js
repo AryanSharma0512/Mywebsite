@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Hide after 10 seconds
-  const timer = setTimeout(eraseText, 6500);
+  const timer = setTimeout(eraseText, 8500);
 
   // Hide immediately on scroll or legend visible
   const instantHide = () => {

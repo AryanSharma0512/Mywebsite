@@ -30,6 +30,21 @@
             "date": "2024-11-30"
           }
         ]
+      },
+      {
+        "name": "Six Flags Great America",
+        "lat": 42.3700,
+        "lng": -87.9363,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747430108/IMG-20250516-WA0025_prkfaz.jpg",
+            "date": "2025-04-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747430098/IMG-20250516-WA0026_l9tbxa.jpg",
+            "date": "2025-04-19"
+          }
+        ]
       }
     ]
   },
@@ -53,21 +68,6 @@
             "date": "2024-12-06"
           }
         ]
-      },
-      {
-        "name": "Engineering Fountain (placeholder)",
-        "lat": 40.4240,
-        "lng": -86.9120,
-        "images": [
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/fountain1.jpg",
-            "date": "YYYY-MM-DD"
-          },
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/fountain2.jpg",
-            "date": "YYYY-MM-DD"
-          }
-        ]
       }
     ]
   },
@@ -89,20 +89,9 @@
           {
             "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414651/IMG-20250516-WA0002_kgv8i2.jpg",
             "date": "2025-05-16"
-          }
-        ]
-      },
-      {
-        "name": "Louvre Museum (placeholder)",
-        "lat": 48.8606,
-        "lng": 2.3376,
-        "images": [
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/louvre1.jpg",
-            "date": "YYYY-MM-DD"
           },
           {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/louvre2.jpg",
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747431867/WhatsApp_Image_2025-05-16_at_23.44.07_7f0a662b_pnezr8.jpg",
             "date": "YYYY-MM-DD"
           }
         ]
@@ -127,59 +116,6 @@
           {
             "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424609/IMG-20250516-WA0007_aka9yk.jpg",
             "date": "2023-08-21"
-          }
-        ]
-      },
-      {
-        "name": "Observation Deck (placeholder)",
-        "lat": 43.0845,
-        "lng": -79.0712,
-        "images": [
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/niagara3.jpg",
-            "date": "YYYY-MM-DD"
-          },
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/niagara4.jpg",
-            "date": "YYYY-MM-DD"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Vadodara",
-    "lat": 22.3072,
-    "lng": 73.1812,
-    "city": true,
-    "places": [
-      {
-        "name": "Alkapuri",
-        "lat": 22.3084,
-        "lng": 73.1740,
-        "images": [
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/vadodara1.jpg",
-            "date": "2023-01-10"
-          },
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/vadodara2.jpg",
-            "date": "2023-01-10"
-          }
-        ]
-      },
-      {
-        "name": "Sayaji Gardens (placeholder)",
-        "lat": 22.3125,
-        "lng": 73.1809,
-        "images": [
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/sayaji1.jpg",
-            "date": "YYYY-MM-DD"
-          },
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/sayaji2.jpg",
-            "date": "YYYY-MM-DD"
           }
         ]
       }
@@ -233,6 +169,101 @@
           {
             "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424616/IMG-20250516-WA0009_rajvak.jpg",
             "date": "2025-05-12"
+          }
+        ]
+      },
+      {
+        "name": "Wall Street",
+        "lat": 40.7074,
+        "lng": -74.0113,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424616/IMG-20250516-WA0013_nxb0y3.jpg",
+            "date": "2025-05-12"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424611/IMG-20250516-WA0010_eqt8sr.jpg",
+            "date": "2025-05-12"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Indianapolis",
+    "lat": 39.7684,
+    "lng": -86.1581,
+    "city": true,
+    "places": [
+      {
+        "name": "White River",
+        "lat": 39.7671,
+        "lng": -86.1760,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747430099/IMG-20250516-WA0020_gwvbtj.jpg",
+            "date": "2024-09-14"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Japan",
+    "lat": 35.6895,
+    "lng": 139.6917,
+    "city": true,
+    "places": [
+      {
+        "name": "Hamarikyu Gardens",
+        "lat": 35.6615,
+        "lng": 139.7620,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747430105/IMG-20250516-WA0019_ldtvz8.jpg",
+            "date": "2025-01-10"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747430109/IMG-20250516-WA0022_jd93wd.jpg",
+            "date": "2025-01-10"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747430106/IMG-20250516-WA0018_ecxsu9.jpg",
+            "date": "2025-01-10"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Toronto",
+    "lat": 43.6511,
+    "lng": -79.3839,
+    "city": true,
+    "places": [
+      {
+        "name": "Royal Ontario Museum",
+        "lat": 43.6677,
+        "lng": -79.3948,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747430101/IMG-20250516-WA0021_bgezyt.jpg",
+            "date": "2025-03-16"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747430102/IMG-20250516-WA0023_qwmm4v.jpg",
+            "date": "2025-03-16"
+          }
+        ]
+      },
+      {
+        "name": "Toronto Island",
+        "lat": 43.6205,
+        "lng": -79.3789,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747430099/IMG-20250516-WA0024_qxe2fy.jpg",
+            "date": "2025-03-16"
           }
         ]
       }

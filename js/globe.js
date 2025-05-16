@@ -5,7 +5,6 @@ fetch('data/locations.json')
     const placeMarkers = [];
 
     data.forEach((city) => {
-      // Add city-level marker
       cityMarkers.push({
         name: city.name,
         lat: city.lat,
@@ -14,9 +13,8 @@ fetch('data/locations.json')
         icon: 'circle'
       });
 
-      // Add place-level markers with slight offsets
       city.places.forEach((place, i) => {
-        const offset = (i % 2 === 0 ? 1 : -1) * 0.05 * Math.ceil(i / 2); // simple staggered offset
+        const offset = (i % 2 === 0 ? 1 : -1) * 0.05 * Math.ceil(i / 2);
         placeMarkers.push({
           name: place.name,
           lat: place.lat + offset,
@@ -29,6 +27,11 @@ fetch('data/locations.json')
 
     let currentMode = 'city';
 
+    const tooltip = document.createElement('div');
+    tooltip.className = 'marker-tooltip';
+    document.body.appendChild(tooltip);
+    let tooltipTimeout;
+
     const globe = Globe()(document.getElementById('globeViz'))
       .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
       .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
@@ -38,19 +41,35 @@ fetch('data/locations.json')
         globe.controls().update();
       });
 
-    // Initial dataset: city markers
-    globe.htmlElementsData(cityMarkers)
-      .htmlLat(d => d.lat)
-      .htmlLng(d => d.lng)
-      .htmlElement(d => {
-        const el = document.createElement('div');
-        el.className = d.icon === 'circle' ? 'city-marker' : 'place-marker';
-        el.title = d.name;
-        el.onclick = () => showGallery(d);
-        return el;
-      });
+    function renderMarkers(dataSet) {
+      globe.htmlElementsData(dataSet)
+        .htmlLat(d => d.lat)
+        .htmlLng(d => d.lng)
+        .htmlElement(d => {
+          const el = document.createElement('div');
+          el.className = d.icon === 'circle' ? 'city-marker' : 'place-marker';
+          el.dataset.tooltip = d.name;
+          el.onclick = () => showGallery(d);
 
-    // Function to show the gallery modal
+          el.onmouseenter = () => {
+            tooltipTimeout = setTimeout(() => {
+              const rect = el.getBoundingClientRect();
+              tooltip.textContent = d.name;
+              tooltip.style.left = `${rect.left + rect.width / 2}px`;
+              tooltip.style.top = `${rect.top + 100}px`;
+              tooltip.style.opacity = '1';
+            }, 300);
+          };
+
+          el.onmouseleave = () => {
+            clearTimeout(tooltipTimeout);
+            tooltip.style.opacity = '0';
+          };
+
+          return el;
+        });
+    }
+
     function showGallery(location) {
       const modal = document.getElementById('image-popup');
       const container = document.getElementById('popup-gallery');
@@ -88,16 +107,17 @@ fetch('data/locations.json')
       modal.style.display = 'flex';
     }
 
-    // Zoom threshold logic to switch between city and place markers
+    renderMarkers(cityMarkers); // show cities by default
+
     globe.controls().addEventListener('change', () => {
       const zoom = globe.camera().position.length();
       const threshold = 110;
 
       if (zoom < threshold && currentMode !== 'place') {
-        globe.htmlElementsData(placeMarkers);
+        renderMarkers(placeMarkers);
         currentMode = 'place';
       } else if (zoom >= threshold && currentMode !== 'city') {
-        globe.htmlElementsData(cityMarkers);
+        renderMarkers(cityMarkers);
         currentMode = 'city';
       }
     });
