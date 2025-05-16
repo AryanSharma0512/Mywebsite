@@ -1257,3 +1257,77 @@ article figure img {
   color: #555;
   text-align: center;
 }
+.city-marker, .place-marker {
+  width: 26px;
+  height: 32px;
+  position: absolute;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translate(-50%, -100%);
+  transition: transform 0.2s ease;
+}
+
+.city-marker {
+  background-image: url('../images/circle.png');
+  background-size: cover;
+  z-index: 9;
+}
+
+.place-marker {
+  background-image: url('../images/marker.png');
+  background-size: cover;
+  z-index: 10;
+}
+
+.place-marker:hover,
+.city-marker:hover {
+  transform: translate(-50%, -110%) scale(1.15);
+}
+
+
+.map-legend {
+  margin: 1.5rem auto;
+  max-width: 700px;
+  padding: 1rem 1.5rem;
+  background: #f7f7f7;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #222;
+}
+
+.map-legend p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0.5rem 0;
+}
+
+.legend-icon {
+  width: 22px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.legend-note {
+  margin-top: 0.75rem;
+  font-style: italic;
+  color: #444;
+}
+
+.scroll-hint {
+  text-align: center;
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  color: #555;
+  opacity: 0.8;
+  margin-top: 1rem;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}

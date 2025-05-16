@@ -1,76 +1,240 @@
 [
   {
-    "name": "The Bean, Chicago",
+    "name": "Chicago",
     "lat": 41.8827,
     "lng": -87.6233,
-    "images": [
+    "city": true,
+    "places": [
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414654/IMG-20250516-WA0004_dbslyh.jpg",
-        "date": "2024-05-01"
+        "name": "The Bean",
+        "lat": 41.8826,
+        "lng": -87.6233,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414654/IMG-20250516-WA0004_dbslyh.jpg",
+            "date": "2024-11-30"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414653/IMG-20250516-WA0003_szl8ni.jpg",
+            "date": "2024-11-30"
+          }
+        ]
       },
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414653/IMG-20250516-WA0003_szl8ni.jpg",
-        "date": "2024-05-01"
+        "name": "Navy Pier",
+        "lat": 41.8916,
+        "lng": -87.6079,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747425289/WhatsApp_Image_2025-05-16_at_21.54.20_17a0b059_ogg8ar.jpg",
+            "date": "2024-11-30"
+          }
+        ]
       }
     ]
   },
   {
-    "name": "Purdue University, West Lafayette",
+    "name": "West Lafayette",
     "lat": 40.4237,
     "lng": -86.9212,
-    "images": [
+    "city": true,
+    "places": [
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414652/IMG-20250516-WA0006_lccerq.jpg",
-        "date": "2024-09-15"
+        "name": "Purdue University",
+        "lat": 40.4237,
+        "lng": -86.9212,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414652/IMG-20250516-WA0006_lccerq.jpg",
+            "date": "2024-08-12"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414650/IMG-20250516-WA0005_wymv2o.jpg",
+            "date": "2024-12-06"
+          }
+        ]
       },
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414650/IMG-20250516-WA0005_wymv2o.jpg",
-        "date": "2024-10-01"
+        "name": "Engineering Fountain (placeholder)",
+        "lat": 40.4240,
+        "lng": -86.9120,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/fountain1.jpg",
+            "date": "YYYY-MM-DD"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/fountain2.jpg",
+            "date": "YYYY-MM-DD"
+          }
+        ]
       }
     ]
   },
   {
-    "name": "Eiffel Tower, Paris",
+    "name": "Paris",
     "lat": 48.8584,
     "lng": 2.2945,
-    "images": [
+    "city": true,
+    "places": [
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414652/IMG-20250516-WA0001_skavqq.jpg",
-        "date": "2025-05-16"
+        "name": "Eiffel Tower",
+        "lat": 48.8584,
+        "lng": 2.2945,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414652/IMG-20250516-WA0001_skavqq.jpg",
+            "date": "2025-05-16"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414651/IMG-20250516-WA0002_kgv8i2.jpg",
+            "date": "2025-05-16"
+          }
+        ]
       },
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414651/IMG-20250516-WA0002_kgv8i2.jpg",
-        "date": "2025-05-16"
+        "name": "Louvre Museum (placeholder)",
+        "lat": 48.8606,
+        "lng": 2.3376,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/louvre1.jpg",
+            "date": "YYYY-MM-DD"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/louvre2.jpg",
+            "date": "YYYY-MM-DD"
+          }
+        ]
       }
     ]
   },
   {
-    "name": "Niagara Falls, Canada",
+    "name": "Niagara Falls",
     "lat": 43.0962,
     "lng": -79.0377,
-    "images": [
+    "city": true,
+    "places": [
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/niagara1.jpg",
-        "date": "2023-08-21"
+        "name": "Main Falls",
+        "lat": 43.0852,
+        "lng": -79.0645,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424627/IMG-20250516-WA0008_ltin9l.jpg",
+            "date": "2023-08-21"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424609/IMG-20250516-WA0007_aka9yk.jpg",
+            "date": "2023-08-21"
+          }
+        ]
       },
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/niagara2.jpg",
-        "date": "2023-08-21"
+        "name": "Observation Deck (placeholder)",
+        "lat": 43.0845,
+        "lng": -79.0712,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/niagara3.jpg",
+            "date": "YYYY-MM-DD"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/niagara4.jpg",
+            "date": "YYYY-MM-DD"
+          }
+        ]
       }
     ]
   },
   {
-    "name": "Vadodara, Gujarat, India",
+    "name": "Vadodara",
     "lat": 22.3072,
     "lng": 73.1812,
-    "images": [
+    "city": true,
+    "places": [
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/vadodara1.jpg",
-        "date": "2023-01-10"
+        "name": "Alkapuri",
+        "lat": 22.3084,
+        "lng": 73.1740,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/vadodara1.jpg",
+            "date": "2023-01-10"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/vadodara2.jpg",
+            "date": "2023-01-10"
+          }
+        ]
       },
       {
-        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/vadodara2.jpg",
-        "date": "2023-01-10"
+        "name": "Sayaji Gardens (placeholder)",
+        "lat": 22.3125,
+        "lng": 73.1809,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/sayaji1.jpg",
+            "date": "YYYY-MM-DD"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/vPLACEHOLDER/sayaji2.jpg",
+            "date": "YYYY-MM-DD"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "New York",
+    "lat": 40.7128,
+    "lng": -74.0060,
+    "city": true,
+    "places": [
+      {
+        "name": "Times Square",
+        "lat": 40.7580,
+        "lng": -73.9855,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424621/IMG-20250516-WA0014_ngojbz.jpg",
+            "date": "2025-05-12"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424615/IMG-20250516-WA0011_zhs6mu.jpg",
+            "date": "2025-05-12"
+          }
+        ]
+      },
+      {
+        "name": "Central Park",
+        "lat": 40.7829,
+        "lng": -73.9654,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424619/IMG-20250516-WA0016_xz2xrj.jpg",
+            "date": "2025-05-12"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424611/IMG-20250516-WA0015_svd3yu.jpg",
+            "date": "2025-05-12"
+          }
+        ]
+      },
+      {
+        "name": "The Vessel",
+        "lat": 40.7540,
+        "lng": -74.0027,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424624/IMG-20250516-WA0012_ybsavy.jpg",
+            "date": "2025-05-12"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424616/IMG-20250516-WA0009_rajvak.jpg",
+            "date": "2025-05-12"
+          }
+        ]
       }
     ]
   }

@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
@@ -29,6 +31,7 @@
 
   <main class="container album-page">
     <h2 class="page-title">Where I've Been</h2>
+    <div class="scroll-hint" id="scrollHint">↓ Scroll down to see map legend</div>
     <div id="globeViz" style="height: 600px; width: 100%; margin-top: 2rem;"></div>
     <div id="image-popup" class="popup">
       <div class="popup-content">
@@ -37,6 +40,20 @@
         <button onclick="document.getElementById('image-popup').style.display='none'">Close</button>
       </div>
     </div>
+    <div class="map-legend" id="legend">
+      <p>
+       <img src="images/circle.png" alt="City icon" class="legend-icon">
+       <strong>City markers:</strong> Yellow dots represent cities I’ve visited.
+      </p>
+      <p>
+       <img src="images/marker.png" alt="Place icon" class="legend-icon">
+       <strong>Place markers:</strong> Red pins represent specific locations and attractions I’ve explored.
+      </p>
+      <p class="legend-note">
+       🗺️ Zoom in on any city to reveal its individual highlights!
+      </p>
+    </div>
+
 
 
     <script src="https://unpkg.com/three"></script>
@@ -57,6 +74,8 @@
   </script>
   <script src="https://unpkg.com/topojson-client@3"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+  <script src="js/scroll-hint.js"></script>
+
 
 </body>
 </html>
