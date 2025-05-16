@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -27,70 +28,20 @@
   </header>
 
   <main class="container album-page">
-    <!-- Creative Title -->
-    <h2 class="page-title">Moments &amp; Memories</h2>
-
-    <!-- Introduction: 50–100 words -->
-    <p class="intro-text">
-      A visual journey through my first year at Purdue University—capturing classroom highlights, intercultural events, and personal milestones. From exploring campus traditions to celebrating academic achievements, each snapshot reflects a story of growth, discovery, and connection. Dive in to see how these experiences shaped my time as an Agricultural Systems Management student.
-    </p>
-
-    <!-- 3×3 Grid of album items -->
-    <div class="album-grid">
-
-      <!-- Frame 1 -->
-      <figure class="album-frame">
-        <h3 class="frame-title">Cultural Center</h3>
-        <time class="frame-date" datetime="2024-10">October 2024</time>
-        <img src="images/cultural.png" alt="Students at cultural festival">
-        <figcaption class="frame-caption">
-          At Purdue’s Native American Cultural Center, I explored traditional exhibits and attended storytelling, and interviewed the receptionist to learn firsthand about the Center’s heritage, mission, and cultural practices.
-        </figcaption>
-      </figure>
-
-      <!-- Frame 2 -->
-      <figure class="album-frame">
-        <h3 class="frame-title">Fluorescence Experiment</h3>
-        <time class="frame-date" datetime="2025-02">February 2025</time>
-        
-        <video class="album-video" src="images/Album/chem.mp4" autoplay loop muted playsinline></video>
-        
-        <figcaption class="frame-caption">
-          In our Chemistry lab, we mixed solutions that fluoresced under UV light, revealing the hidden beauty of molecular interactions and sparking my fascination with the science behind everyday phenomena.
-        </figcaption>
-      </figure>
-      
-      <!-- Frame 3 -->
-      <figure class="album-frame">
-        <h3 class="frame-title">Server Setup</h3>
-        <time class="frame-date" datetime="2024-11">November 2024</time>
-        <img src="images/Album/server.png" alt="Configuring a server">
-        <figcaption class="frame-caption">
-          During my summer internship prep, I set up and secured an Apache/MySQL server—laying the groundwork for the accounting backend of my ticketing project.
-        </figcaption>
-      </figure>
-
-      <!-- Frame 4 -->
-      <figure class="album-frame">
-        <h3 class="frame-title">Cooking Night</h3>
-        <time class="frame-date" datetime="2025-04">April 2025</time>
-        <img src="images/Album/cooking.jpg" alt="Cooking with friends">
-        <figcaption class="frame-caption">
-          Hosting an international potluck in my dorm kitchen allowed me to share a taste of home and learn new recipes from friends around the world.
-        </figcaption>
-      </figure>
-
-      <!-- Frame 5 -->
-      <figure class="album-frame">
-        <h3 class="frame-title">BGR Team leader</h3>
-        <time class="frame-date" datetime="2025-04">April 2025</time>
-        <img src="images/Album/TL.jpg" alt="BGR Team Leader">
-        <figcaption class="frame-caption">
-          I'm currently being trained to serve as a Boiler Gold Rush (BGR) Team Leader for BGR 2025, where I’ll welcome incoming freshmen, guide campus tours, and help build a supportive community spirit at Purdue.
-        </figcaption>
-      </figure>
-
+    <h2 class="page-title">Where I've Been</h2>
+    <div id="globeViz" style="height: 600px; width: 100%; margin-top: 2rem;"></div>
+    <div id="image-popup" class="popup">
+      <div class="popup-content">
+        <h3 id="popup-title"></h3>
+        <div id="popup-gallery" class="popup-gallery"></div>
+        <button onclick="document.getElementById('image-popup').style.display='none'">Close</button>
+      </div>
     </div>
+
+
+    <script src="https://unpkg.com/three"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
+    <script src="js/globe.js"></script>
   </main>
 
   <!-- Footer (same as other pages) -->
@@ -104,5 +55,8 @@
       document.querySelector('.nav-links').classList.toggle('show');
     });
   </script>
+  <script src="https://unpkg.com/topojson-client@3"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+
 </body>
 </html>

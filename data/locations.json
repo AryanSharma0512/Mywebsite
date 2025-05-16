@@ -1,0 +1,77 @@
+[
+  {
+    "name": "The Bean, Chicago",
+    "lat": 41.8827,
+    "lng": -87.6233,
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414654/IMG-20250516-WA0004_dbslyh.jpg",
+        "date": "2024-05-01"
+      },
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414653/IMG-20250516-WA0003_szl8ni.jpg",
+        "date": "2024-05-01"
+      }
+    ]
+  },
+  {
+    "name": "Purdue University, West Lafayette",
+    "lat": 40.4237,
+    "lng": -86.9212,
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414652/IMG-20250516-WA0006_lccerq.jpg",
+        "date": "2024-09-15"
+      },
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414650/IMG-20250516-WA0005_wymv2o.jpg",
+        "date": "2024-10-01"
+      }
+    ]
+  },
+  {
+    "name": "Eiffel Tower, Paris",
+    "lat": 48.8584,
+    "lng": 2.2945,
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414652/IMG-20250516-WA0001_skavqq.jpg",
+        "date": "2025-05-16"
+      },
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414651/IMG-20250516-WA0002_kgv8i2.jpg",
+        "date": "2025-05-16"
+      }
+    ]
+  },
+  {
+    "name": "Niagara Falls, Canada",
+    "lat": 43.0962,
+    "lng": -79.0377,
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/niagara1.jpg",
+        "date": "2023-08-21"
+      },
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/niagara2.jpg",
+        "date": "2023-08-21"
+      }
+    ]
+  },
+  {
+    "name": "Vadodara, Gujarat, India",
+    "lat": 22.3072,
+    "lng": 73.1812,
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/vadodara1.jpg",
+        "date": "2023-01-10"
+      },
+      {
+        "url": "https://res.cloudinary.com/dudip2vsk/image/upload/travel/vadodara2.jpg",
+        "date": "2023-01-10"
+      }
+    ]
+  }
+]
