@@ -1,6 +1,5 @@
 // Helper to generate optimized Cloudinary URLs
 function getThumbUrl(url, width = 200) {
-  // auto format, quality, DPR support
   return url.replace(
     '/upload/',
     `/upload/c_fill,w_${width},dpr_auto,f_auto,q_auto/`
@@ -8,11 +7,140 @@ function getThumbUrl(url, width = 200) {
 }
 
 function getFullUrl(url, maxWidth = 1200) {
-  // limit size to maxWidth, auto format/quality
   return url.replace(
     '/upload/',
     `/upload/c_limit,w_${maxWidth},dpr_auto,f_auto,q_auto/`
   );
+}
+
+// Helper to generate the high-quality URL by removing Cloudinary transformation parameters.
+function getHDUrl(url) {
+  return url.replace(/\/upload\/[^/]+\//, '/upload/');
+}
+
+// --- Helper functions for cookies ---
+function getCookie(name) {
+  const cookieArr = document.cookie.split(";");
+  for (let i = 0; i < cookieArr.length; i++) {
+    let cookiePair = cookieArr[i].split("=");
+    if (name.trim() == cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  return null;
+}
+
+function setCookie(name, value, days) {
+  let expires = "";
+  if (days) {
+    const dt = new Date();
+    dt.setTime(dt.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + dt.toUTCString();
+  }
+  document.cookie = name + "=" + encodeURIComponent(value) + expires + "; path=/";
+}
+
+// --- Global flags and timers ---
+let isHDLoaded = false;
+let showHDButtonTimeout;
+let hideHDStatusTimeout;
+let currentPhotoIndex = 0;
+let photoArray = [];
+
+// Called whenever you change photos
+function updatePhotoViewer() {
+  const img = document.getElementById('viewer-img');
+  const currentUrl = photoArray[currentPhotoIndex];
+  const hdUrl = getHDUrl(currentUrl);
+  const cookieName = 'hdLoaded_' + hdUrl;
+
+  isHDLoaded = !!getCookie(cookieName);
+  const cachedHD = localStorage.getItem('hd_' + hdUrl);
+  img.src = isHDLoaded && cachedHD ? cachedHD : currentUrl;
+
+  const hdBtn = document.getElementById('load-hd-btn');
+  hdBtn.style.display = "none";
+  document.getElementById('hd-status')?.remove();
+
+  clearTimeout(showHDButtonTimeout);
+  clearTimeout(hideHDStatusTimeout);
+
+  img.onload = function () {
+    if (!isHDLoaded) {
+      showHDButtonTimeout = setTimeout(() => {
+        if (!isHDLoaded) {
+          hdBtn.style.display = "block";
+        }
+      }, 4000);
+    }
+  };
+}
+
+// Called once the HD image has been loaded
+function handleHDLoaded() {
+  clearTimeout(showHDButtonTimeout);
+  clearTimeout(hideHDStatusTimeout);
+
+  const hdBtn = document.getElementById('load-hd-btn');
+  hdBtn.style.display = "none";
+
+  let hdStatus = document.getElementById('hd-status');
+  if (hdStatus) {
+    hdStatus.remove();
+  }
+
+  hdStatus = document.createElement('div');
+  hdStatus.id = 'hd-status';
+  hdStatus.textContent = "Now viewing in HD quality ✅";
+  Object.assign(hdStatus.style, {
+    position: 'absolute',
+    bottom: '10px',
+    right: '10px',
+    color: '#fff',
+    background: 'rgba(0,0,0,0.5)',
+    padding: '0.5rem 1rem',
+    borderRadius: '4px'
+  });
+  document.querySelector('.viewer-overlay').appendChild(hdStatus);
+
+  hideHDStatusTimeout = setTimeout(() => {
+    hdStatus.remove();
+  }, 7000);
+}
+
+// Load HD image
+function loadHDImage() {
+  const imgElement = document.getElementById('viewer-img');
+  const currentUrl = photoArray[currentPhotoIndex];
+  const hdUrl = getHDUrl(currentUrl);
+  const cacheKey = 'hd_' + hdUrl;
+  const cookieName = 'hdLoaded_' + hdUrl;
+
+  isHDLoaded = true;
+  setCookie(cookieName, "true", 30);
+
+  const hdBtn = document.getElementById('load-hd-btn');
+  hdBtn.style.display = "none";
+
+  const cachedHD = localStorage.getItem(cacheKey);
+  if (cachedHD) {
+    imgElement.src = cachedHD;
+    handleHDLoaded();
+  } else {
+    fetch(hdUrl)
+      .then(response => response.blob())
+      .then(blob => {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+          const dataUrl = reader.result;
+          localStorage.setItem(cacheKey, dataUrl);
+          imgElement.src = dataUrl;
+          handleHDLoaded();
+        };
+        reader.readAsDataURL(blob);
+      })
+      .catch(err => console.error('Error loading HD image', err));
+  }
 }
 
 // Fetch city/place data
@@ -46,13 +174,11 @@ fetch('data/locations.json')
 
     let currentMode = 'city';
 
-    // Tooltip setup
     const tooltip = document.createElement('div');
     tooltip.className = 'marker-tooltip';
     document.body.appendChild(tooltip);
     let tooltipTimeout;
 
-    // Initialize globe
     const globe = Globe()(document.getElementById('globeViz'))
       .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
       .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
@@ -62,7 +188,6 @@ fetch('data/locations.json')
         globe.controls().update();
       });
 
-    // Render HTML markers
     function renderMarkers(dataSet) {
       globe.htmlElementsData(dataSet)
         .htmlLat(d => d.lat)
@@ -76,7 +201,7 @@ fetch('data/locations.json')
             tooltipTimeout = setTimeout(() => {
               const rect = el.getBoundingClientRect();
               tooltip.textContent = d.name;
-              tooltip.style.left = `${rect.left + rect.width/2}px`;
+              tooltip.style.left = `${rect.left + rect.width / 2}px`;
               tooltip.style.top = `${rect.top + 100}px`;
               tooltip.style.opacity = '1';
             }, 300);
@@ -89,7 +214,6 @@ fetch('data/locations.json')
         });
     }
 
-    // Show up to 4 thumbnails in popup
     function showGallery(location) {
       const modal = document.getElementById('image-popup');
       const container = document.getElementById('popup-gallery');
@@ -121,13 +245,9 @@ fetch('data/locations.json')
         caption.className = 'thumb-caption';
         caption.textContent = `Captured on ${date}`;
 
-        // Attach click event to open photo viewer.
         thumb.addEventListener('click', (evt) => {
           evt.preventDefault();
-          // If you have multiple photos, build an array here.
-          // For example, if location.images is available:
           const fullUrls = (location.images || []).map(img => getFullUrl(img.url, 1200));
-          // Find the index of the clicked image.
           const index = fullUrls.findIndex(url => url === fullUrl);
           openPhotoViewer(index, fullUrls);
         });
@@ -138,7 +258,6 @@ fetch('data/locations.json')
         container.appendChild(wrapper);
       });
 
-      // Full album button
       if (location.albumId) {
         const albumBtn = document.createElement('button');
         albumBtn.textContent = '📸 View full album';
@@ -150,15 +269,12 @@ fetch('data/locations.json')
       modal.style.display = 'flex';
     }
 
-    // Pagination state
     let albumImages = [];
     let currentPage = 0;
     const imagesPerPage = 25;
 
-    // Helper to flip pages with animation
     function flipToPage(newPage) {
       const albumCard = document.querySelector('.album-card');
-      // Determine the flip direction.
       if (newPage > currentPage) {
         albumCard.classList.add('flip-next');
       } else {
@@ -172,7 +288,6 @@ fetch('data/locations.json')
       }, { once: true });
     }
 
-    // Fetch and open full album
     function openAlbum(albumId, title) {
       fetch(`data/albums/${albumId}.json?cb=${Date.now()}`, { cache: 'no-store' })
         .then(res => res.json())
@@ -181,14 +296,14 @@ fetch('data/locations.json')
           currentPage = 0;
           document.getElementById('image-popup').style.display = 'none';
           const modal = document.getElementById('album-popup');
-          // Ensure card wrapper exists
           if (!modal.querySelector('.album-card')) {
             const card = document.createElement('div');
             card.className = 'album-card';
             const titleEl = document.getElementById('album-title');
             const gridEl = document.getElementById('album-collage');
-            const pagEl  = document.getElementById('album-pagination') || document.createElement('div');
-            pagEl.id = 'album-pagination'; pagEl.className = 'album-pagination';
+            const pagEl = document.getElementById('album-pagination') || document.createElement('div');
+            pagEl.id = 'album-pagination';
+            pagEl.className = 'album-pagination';
             card.appendChild(titleEl);
             card.appendChild(gridEl);
             card.appendChild(pagEl);
@@ -196,13 +311,11 @@ fetch('data/locations.json')
           }
           modal.style.display = 'flex';
           document.getElementById('album-title').textContent = `Full Album — ${title}`;
-          console.log(`Loaded ${images.length} images for album ${albumId}`);
           renderAlbumPage();
         })
         .catch(err => alert(`⚠️ Failed to load album: ${err.message}`));
     }
 
-    // Render current page of album
     function renderAlbumPage() {
       const collage = document.getElementById('album-collage');
       collage.innerHTML = '';
@@ -213,19 +326,16 @@ fetch('data/locations.json')
 
       pageImages.forEach((img, idx) => {
         const a = document.createElement('a');
-        a.href = "#";  // Prevent default navigation
+        a.href = "#";
 
         const image = document.createElement('img');
         image.src = img.thumb;
         image.loading = 'lazy';
         image.alt = `Captured on ${img.captured || 'Unknown Date'}`;
 
-        // When clicked, open our custom viewer modal instead of navigating out.
         a.addEventListener('click', (evt) => {
           evt.preventDefault();
-          // Build an array of full image URLs for the entire album.
           const fullUrls = albumImages.map(item => getFullUrl(item.full, 1200));
-          // The index should reflect the position in the overall albumImages array.
           openPhotoViewer(start + idx, fullUrls);
         });
 
@@ -236,7 +346,6 @@ fetch('data/locations.json')
       renderPaginationControls();
     }
 
-    // Pagination controls
     function renderPaginationControls() {
       let pagination = document.getElementById('album-pagination');
       if (!pagination) {
@@ -266,10 +375,8 @@ fetch('data/locations.json')
       pagination.appendChild(nextBtn);
     }
 
-    // Initial render
     renderMarkers(cityMarkers);
 
-    // Zoom-based marker switching
     globe.controls().addEventListener('change', () => {
       const zoom = globe.camera().position.length();
       const threshold = 110;
@@ -284,22 +391,11 @@ fetch('data/locations.json')
   })
   .catch(err => console.error('Error loading location data', err));
 
-let currentPhotoIndex = 0;
-let photoArray = [];
-
-// Opens the custom photo viewer modal with the provided array of image URLs.
-// startIndex is the index of the photo that was clicked.
 function openPhotoViewer(startIndex, images) {
   currentPhotoIndex = startIndex;
   photoArray = images;
   updatePhotoViewer();
   document.getElementById('photo-viewer').style.display = 'flex';
-}
-
-// Updates the viewer image source.
-function updatePhotoViewer() {
-  const img = document.getElementById('viewer-img');
-  img.src = photoArray[currentPhotoIndex];
 }
 
 function closePhotoViewer() {
