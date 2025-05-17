@@ -268,5 +268,161 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Ahmedabad",
+    "lat": 23.0225,
+    "lng": 72.5714,
+    "city": true,
+    "places": [
+      {
+        "name": "DPS East Ahmedabad",
+        "lat": 22.927267,
+        "lng": 72.710192,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747472814/FB_IMG_15672697566944049_p4gpxb.jpg",
+            "date": "2015-03-11"
+          }
+        ]
+      },
+      {
+        "name": "Kankaria Lake (butterfly park)",
+        "lat": 22.9920,
+        "lng": 72.6036,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747473192/IMG_20191025_170448_ydgray.jpg",
+            "date": "2019-10-25"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747473193/IMG_20191025_200621_qdfrjk.jpg",
+            "date": "2019-10-25"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747473220/IMG_20191025_171359_uctshn.jpg",
+            "date": "2019-10-25"
+          }
+        ]
+      },
+      {
+        "name": "City Point restaurant",
+        "lat": 23.019809,
+        "lng": 72.632583,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747474292/IMG-20191213-WA0015_o9lfi5.jpg",
+            "date": "2020-01-12"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Vadodara",
+    "lat": 22.3072,
+    "lng": 73.1812,
+    "city": true,
+    "places": [
+      {
+        "name": "Darshanam Greens (Society)",
+        "lat": 22.284410,
+        "lng": 73.224865,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747474292/IMG-20190818-WA0013_whcvyw.jpg",
+            "date": "2019-08-15"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747476639/WhatsApp_Image_2025-05-17_at_12.03.09_356e9cc6_ynmlno.jpg",
+            "date": "2024-05-17"
+          }
+        ]
+      },
+      {
+        "name": "McDonald's, OP Road",
+        "lat": 22.296985,
+        "lng": 73.164869,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747476626/WhatsApp_Image_2025-05-17_at_12.09.25_95b4e694_mudagn.jpg",
+            "date": "2019-02-28"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747476610/WhatsApp_Image_2025-05-17_at_12.09.25_a5c4f4f5_cnhprr.jpg",
+            "date": "2019-08-28"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747476868/WhatsApp_Image_2025-05-17_at_12.14.02_0ffbcdbe_wfvazg.jpg",
+            "date": "2024-08-07"
+          }
+        ]
+      },
+      {
+        "name": "Green Valley High School",
+        "lat": 22.296873,
+        "lng": 73.081610,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747475258/WhatsApp_Image_2025-05-17_at_11.46.00_2ffd40b5_adtwm8.jpg",
+            "date": "2024-02-10"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747475251/WhatsApp_Image_2025-05-17_at_11.46.00_f6e7f083_onvvku.jpg",
+            "date": "2024-02-10"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747475245/WhatsApp_Image_2025-05-17_at_11.46.00_ce341fe9_c1vwhe.jpg",
+            "date": "2024-02-10"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747475488/WhatsApp_Image_2025-05-17_at_11.51.05_ebc369aa_jh1meb.jpg",
+            "date": "2023-10-19"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Surat",
+    "lat": 21.1702,
+    "lng": 72.8311,
+    "city": true,
+    "places": [
+      {
+        "name": "Jolly Residency",
+        "lat": 21.146870,
+        "lng": 72.772862,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747476242/WhatsApp_Image_2025-05-17_at_12.02.57_23752a7a_dtad70.jpg",
+            "date": "2024-05-29"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747475748/WhatsApp_Image_2025-05-17_at_11.55.03_39c65a2a_ux2c1e.jpg",
+            "date": "2024-06-06"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747475743/WhatsApp_Image_2025-05-17_at_11.55.03_79ffd3af_yrcjqy.jpg",
+            "date": "2024-06-02"
+          }
+        ]
+      },
+      {
+        "name": "Starbucks, VIP Road",
+        "lat": 21.142534,
+        "lng": 72.788236,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747476254/WhatsApp_Image_2025-05-17_at_12.01.34_14abdaba_rh4prt.jpg",
+            "date": "2024-06-06"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747476260/WhatsApp_Image_2025-05-17_at_12.01.20_6e212869_idzh3c.jpg",
+            "date": "2024-06-07"
+          }
+        ]
+      }
+    ]
   }
 ]
