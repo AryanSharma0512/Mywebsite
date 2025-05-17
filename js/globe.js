@@ -121,6 +121,17 @@ fetch('data/locations.json')
         caption.className = 'thumb-caption';
         caption.textContent = `Captured on ${date}`;
 
+        // Attach click event to open photo viewer.
+        thumb.addEventListener('click', (evt) => {
+          evt.preventDefault();
+          // If you have multiple photos, build an array here.
+          // For example, if location.images is available:
+          const fullUrls = (location.images || []).map(img => getFullUrl(img.url, 1200));
+          // Find the index of the clicked image.
+          const index = fullUrls.findIndex(url => url === fullUrl);
+          openPhotoViewer(index, fullUrls);
+        });
+
         link.appendChild(thumb);
         wrapper.appendChild(link);
         wrapper.appendChild(caption);
@@ -200,17 +211,24 @@ fetch('data/locations.json')
       const end = start + imagesPerPage;
       const pageImages = albumImages.slice(start, end);
 
-      pageImages.forEach(img => {
+      pageImages.forEach((img, idx) => {
         const a = document.createElement('a');
-        const fullUrl = getFullUrl(img.full, 1200);
-        a.href = fullUrl;
-        a.setAttribute('data-lightbox', 'album-full');
-        a.setAttribute('data-title', `Captured on ${img.captured || 'Unknown Date'}`);
+        a.href = "#";  // Prevent default navigation
 
         const image = document.createElement('img');
         image.src = img.thumb;
         image.loading = 'lazy';
         image.alt = `Captured on ${img.captured || 'Unknown Date'}`;
+
+        // When clicked, open our custom viewer modal instead of navigating out.
+        a.addEventListener('click', (evt) => {
+          evt.preventDefault();
+          // Build an array of full image URLs for the entire album.
+          const fullUrls = albumImages.map(item => getFullUrl(item.full, 1200));
+          // The index should reflect the position in the overall albumImages array.
+          openPhotoViewer(start + idx, fullUrls);
+        });
+
         a.appendChild(image);
         collage.appendChild(a);
       });
@@ -265,3 +283,39 @@ fetch('data/locations.json')
     });
   })
   .catch(err => console.error('Error loading location data', err));
+
+let currentPhotoIndex = 0;
+let photoArray = [];
+
+// Opens the custom photo viewer modal with the provided array of image URLs.
+// startIndex is the index of the photo that was clicked.
+function openPhotoViewer(startIndex, images) {
+  currentPhotoIndex = startIndex;
+  photoArray = images;
+  updatePhotoViewer();
+  document.getElementById('photo-viewer').style.display = 'flex';
+}
+
+// Updates the viewer image source.
+function updatePhotoViewer() {
+  const img = document.getElementById('viewer-img');
+  img.src = photoArray[currentPhotoIndex];
+}
+
+function closePhotoViewer() {
+  document.getElementById('photo-viewer').style.display = 'none';
+}
+
+function prevPhoto() {
+  if (currentPhotoIndex > 0) {
+    currentPhotoIndex--;
+    updatePhotoViewer();
+  }
+}
+
+function nextPhoto() {
+  if (currentPhotoIndex < photoArray.length - 1) {
+    currentPhotoIndex++;
+    updatePhotoViewer();
+  }
+}

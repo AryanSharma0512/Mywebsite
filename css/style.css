@@ -1500,7 +1500,7 @@ article figure img {
   50%  { transform: rotateY(-60deg); }
   75%  { transform: rotateY(-80deg) skewY(0deg); }
   100% { transform: rotateY(-120deg); }
-}
+} 
 @keyframes flip-prev {
   0%   { transform: rotateY(0deg); }
   25%  { transform: rotateY(40deg) skewY(-3deg); }
@@ -1517,5 +1517,54 @@ article figure img {
 .album-card.flip-prev .album-grid {
   transform-origin: left center;
   animation: flip-prev 2s ease-in-out forwards;
+}
+
+/* Photo Viewer Modal */
+.photo-viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 11000;
+}
+.viewer-overlay {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+.viewer-overlay img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+.viewer-close,
+.viewer-prev,
+.viewer-next {
+  position: absolute;
+  background: rgba(255,255,255,0.8);
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+}
+.viewer-close {
+  top: 10px;
+  right: 10px;
+}
+.viewer-prev {
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+.viewer-next {
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
 }
 

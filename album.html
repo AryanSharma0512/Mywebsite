@@ -57,6 +57,16 @@
       </div>
     </div>
 
+    <!-- Photo Viewer Modal -->
+    <div id="photo-viewer" class="photo-viewer" style="display:none;">
+      <div class="viewer-overlay">
+        <button class="viewer-close" onclick="closePhotoViewer()">×</button>
+        <button class="viewer-prev" onclick="prevPhoto()">&#60;</button>
+        <img id="viewer-img" src="" alt="Photo">
+        <button class="viewer-next" onclick="nextPhoto()">&#62;</button>
+      </div>
+    </div>
+
     <div class="map-legend" id="legend">
       <p>
        <img src="images/circle.png" alt="City icon" class="legend-icon">
