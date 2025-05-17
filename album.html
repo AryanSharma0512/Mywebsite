@@ -48,6 +48,15 @@
         <button onclick="document.getElementById('image-popup').style.display='none'">Close</button>
       </div>
     </div>
+    <div id="album-popup" class="modal">
+      <span class="close" onclick="this.parentElement.style.display='none'">×</span>
+      <div class="album-card">
+        <h2 id="album-title">Full Album — …</h2>
+        <div id="album-collage" class="album-grid"></div>
+        <div id="album-pagination" class="album-pagination"></div>
+      </div>
+    </div>
+
     <div class="map-legend" id="legend">
       <p>
        <img src="images/circle.png" alt="City icon" class="legend-icon">
@@ -61,8 +70,6 @@
        🗺️ Zoom in on any city to reveal its individual highlights!
       </p>
     </div>
-
-
 
     <script src="https://unpkg.com/three"></script>
     <script src="https://unpkg.com/globe.gl"></script>
@@ -83,6 +90,10 @@
   <script src="https://unpkg.com/topojson-client@3"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
   <script src="js/scroll-hint.js"></script>
+  <script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
+  <script src="https://unpkg.com/three-globe"></script>
+
+
 
 
 </body>

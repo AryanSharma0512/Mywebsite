@@ -95,6 +95,23 @@
             "date": "YYYY-MM-DD"
           }
         ]
+      },
+      {
+        "name": "Malmaison Museum",
+        "lat": 48.8623,
+        "lng": 2.1712,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/da0nag1rl/image/upload/photo%20dump/French%20museum/cover1.jpg",
+            "date": "2025-05-17"
+          },
+          {
+            "url": "https://res.cloudinary.com/da0nag1rl/image/upload/photo%20dump/French%20museum/cover2.jpg",
+            "date": "2025-05-17"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "french_museum"
       }
     ]
   },

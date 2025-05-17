@@ -1349,3 +1349,173 @@ article figure img {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
+
+/* Album Modal Overlay */
+#album-popup.modal {
+  display: none;               /* still toggled via JS */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  padding-top: 5rem;           /* space for site header */
+  background-color: rgba(230, 250, 230, 0.95);
+  overflow: hidden;            /* overall overlay doesn’t scroll */
+  z-index: 10000;
+  /* JS will set inline display:flex, centering the card */
+}
+
+/* Close “×” button */
+#album-popup .close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  color: #2e5d2e;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+#album-popup .close:hover {
+  color: #4caf50;
+}
+
+/* Album “book” container */
+.album-card {
+  width: 70vw;
+  max-width: 1200px;
+  height: 80vh;                /* FIXED height to allow internal scrolling */
+  margin: 1rem auto;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background: #f7fdf7;
+  border: 2px solid #c8e6c9;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  perspective: 1000px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;            /* hides overflow except grid */
+}
+
+/* Title at top */
+.album-card > #album-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2e5d2e;
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+/* Scrollable 5×5 grid of “pages” */
+.album-card > .album-grid {
+  flex: 1 1 auto;             /* fill the card’s remaining height */
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  overflow-y: auto;            /* internal scroll */
+  padding-right: 0.5rem;       /* prevent content hidden under scrollbar */
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Custom scrollbar */
+/* WebKit */
+.album-card > .album-grid::-webkit-scrollbar {
+  width: 8px;
+}
+.album-card > .album-grid::-webkit-scrollbar-track {
+  background: #e0f2e9;
+  border-radius: 4px;
+}
+.album-card > .album-grid::-webkit-scrollbar-thumb {
+  background: #81c784;
+  border-radius: 4px;
+}
+.album-card > .album-grid::-webkit-scrollbar-thumb:hover {
+  background: #61b77f;
+}
+/* Firefox */
+.album-card > .album-grid {
+  scrollbar-width: thin;
+  scrollbar-color: #81c784 #e0f2e9;
+}
+
+/* Individual “page” slots */
+.album-card .album-grid a {
+  display: block;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background: white;
+  border: 2px solid #c8e6c9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.album-card .album-grid a img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hover pop/tilt */
+.album-card .album-grid a:hover {
+  transform: translateY(-6px) rotateZ(1deg) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Pagination bar (book binding) */
+.album-card > .album-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.album-card .album-pagination button {
+  padding: 0.5rem 1rem;
+  background: #a5d6a7;
+  color: #2e5d2e;
+  border: 1px solid #81c784;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.album-card .album-pagination button:disabled {
+  background: #e0f2e9;
+  color: #88b788;
+  cursor: default;
+}
+.album-card .album-pagination button:hover:not(:disabled) {
+  background: #81c784;
+}
+.album-card .album-pagination span {
+  font-weight: 600;
+  color: #2e5d2e;
+}
+
+/* Page-flip keyframes */
+@keyframes flip-next {
+  0%   { transform: rotateY(0deg); }
+  25%  { transform: rotateY(-40deg) skewY(3deg); }
+  50%  { transform: rotateY(-60deg); }
+  75%  { transform: rotateY(-80deg) skewY(0deg); }
+  100% { transform: rotateY(-120deg); }
+}
+@keyframes flip-prev {
+  0%   { transform: rotateY(0deg); }
+  25%  { transform: rotateY(40deg) skewY(-3deg); }
+  50%  { transform: rotateY(60deg); }
+  75%  { transform: rotateY(80deg) skewY(0deg); }
+  100% { transform: rotateY(120deg); }
+}
+
+/* Trigger flip on the grid */
+.album-card.flip-next .album-grid {
+  transform-origin: left center;
+  animation: flip-next 2s ease-in-out forwards;
+}
+.album-card.flip-prev .album-grid {
+  transform-origin: left center;
+  animation: flip-prev 2s ease-in-out forwards;
+}
+
