@@ -1538,7 +1538,9 @@ article figure img {
   max-height: 90%;
 }
 .viewer-overlay img {
-  width: 100%;
+  max-width: 90vw;   /* Limit image width to 90% of viewport width */
+  max-height: 90vh;  /* Limit image height to 90% of viewport height */
+  width: auto;
   height: auto;
   display: block;
   border-radius: 8px;
