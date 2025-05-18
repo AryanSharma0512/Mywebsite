@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verifying Access | Aryan Sharma</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/2.1.0/fingerprint2.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #111;
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .verifying-box {
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      max-width: 600px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .countdown {
+      font-size: 3rem;
+      margin: 1rem 0;
+      color: #76ff03;
+      font-weight: bold;
+    }
+
+    .thank-you {
+      margin-top: 2rem;
+      color: #999;
+      font-style: italic;
+    }
+
+    .trap {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .low-traffic {
+      color: #76ff03;
+      font-weight: bold;
+      text-shadow: 0 0 8px rgba(118, 255, 3, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="verifying-box">
+    <h2>🛡️ IronGate<sup style="font-size: 0.5em;">™</sup> Deployed 🛡️</h2>
+    <p>We are currently checking your browser as our servers are under increased load.</p>
+    <p>Your access will be granted in:</p>
+    <div class="countdown" id="countdown">7</div>
+    <p>Traffic on the website is currently: <span class="low-traffic">Low</span>.</p>
+    <p class="thank-you">Thank you.</p>
+  </div>
+
+  <!-- Honeypot bot trap -->
+  <button class="trap" onclick="trapTriggered()">Invisible Trap</button>
+
+  <script>
+    const REDIRECT_URL = "album.html";
+    const COOKIE_NAME = "IronGateVerification";
+
+    const COOLDOWN_KEY = "IronGateCooldown";
+    const COOLDOWN_MS = 2 * 60 * 1000;
+
+    const REFRESH_LOG_COOKIE = "IronGateRefreshLog";
+    const WARNINGS_COOKIE = "IronGateWarnings";
+    const BAN_COOKIE = "IronGateBanUntil";
+    const MAX_REFRESHES = 10;
+    const WARNING_THRESHOLD = 3;
+
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? decodeURIComponent(match[2]) : null;
+    }
+
+    function setCookie(name, value, seconds) {
+      const expires = new Date(Date.now() + seconds * 1000).toUTCString();
+      document.cookie = `${name}=${encodeURIComponent(value)}; path=/; expires=${expires}; SameSite=Strict`;
+    }
+
+    function hashTimestamp(ts) {
+      return btoa(ts.toString()).split('').reverse().join('');
+    }
+
+    function trapTriggered() {
+      document.body.innerHTML = "<h2>🚫 Access Denied</h2><p>Unusual activity detected.</p>";
+      throw new Error("Bot trap triggered");
+    }
+
+    function isHeadless() {
+      return (
+        navigator.webdriver ||
+        screen.width === 0 ||
+        navigator.plugins.length === 0 ||
+        Intl.DateTimeFormat().resolvedOptions().timeZone === undefined
+      );
+    }
+
+    // Check if user is banned
+    const banUntil = parseInt(getCookie(BAN_COOKIE) || "0");
+    if (!isNaN(banUntil) && Date.now() < banUntil) {
+      document.body.innerHTML = `<h2>🚫 Temporary Ban</h2><p>Please wait 1 minute before retrying.</p>`;
+      throw new Error("User banned temporarily.");
+    }
+
+    // Log refresh
+    const now = Date.now();
+    const rawLog = getCookie(REFRESH_LOG_COOKIE);
+    const log = rawLog ? JSON.parse(atob(rawLog)) : [];
+
+    const filteredLog = log.filter(t => now - t < COOLDOWN_MS);
+    filteredLog.push(now);
+    setCookie(REFRESH_LOG_COOKIE, btoa(JSON.stringify(filteredLog)), 120);
+
+    if (filteredLog.length > MAX_REFRESHES) {
+      let warnings = parseInt(getCookie(WARNINGS_COOKIE) || "0");
+      warnings++;
+      setCookie(WARNINGS_COOKIE, warnings, 1800); // 1 hour retention
+
+      if (warnings >= WARNING_THRESHOLD) {
+        setCookie(BAN_COOKIE, now + 60000, 60); // ban for 60s
+        document.body.innerHTML = `<h2>🚫 Too Many Refreshes</h2><p>You have been temporarily blocked for 60 seconds.</p>`;
+        throw new Error("Too many refreshes.");
+      } else {
+        document.body.innerHTML = `<h2>⚠️ Warning ${warnings}</h2><p>Please slow down! You may be blocked if this continues.</p>`;
+        throw new Error("User warned.");
+      }
+    }
+
+    if (isHeadless()) {
+      document.body.innerHTML = "<h2>🚫 Suspicious Browser</h2><p>Automation tools are not allowed.</p>";
+      throw new Error("Blocked headless browser.");
+    }
+
+    // Countdown & fingerprint trigger
+    let seconds = 7;
+    const countdownEl = document.getElementById("countdown");
+    const timer = setInterval(() => {
+      seconds--;
+      countdownEl.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(timer);
+        verifyAndRedirect();
+      }
+    }, 1000);
+
+    function verifyAndRedirect() {
+      Fingerprint2.get(components => {
+        const values = components.map(c => c.value);
+        const hash = Fingerprint2.x64hash128(values.join(''), 31);
+        const timestamp = Date.now();
+        const hashedTime = hashTimestamp(timestamp);
+
+        document.cookie = `${COOKIE_NAME}=1_${hashedTime}_${hash}; path=/; max-age=86400; SameSite=Strict`;
+        localStorage.setItem(COOLDOWN_KEY, timestamp);
+        location.href = REDIRECT_URL;
+      });
+    }
+  </script>
+  
+  <script>
+    // DevTools detection trick (basic)
+    const devtools = { open: false };
+    const element = new Image();
+    Object.defineProperty(element, 'id', {
+      get: function () {
+        devtools.open = true;
+        throw new Error("DevTools detected");
+      }
+    });
+    setInterval(() => {
+      devtools.open = false;
+      console.log(element);
+      if (devtools.open) {
+        document.body.innerHTML = `
+          <div class="verifying-box">
+            <h2>🔒 DevTools Inspection Detected</h2>
+            <p>We're running checks to ensure fair access.</p>
+            <p>If you're inspecting this page, please close DevTools to proceed.</p>
+          </div>
+        `;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
