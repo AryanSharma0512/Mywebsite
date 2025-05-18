@@ -153,9 +153,11 @@
       }
     }
 
+    // More lenient headless check: just log a warning rather than block.
     if (isHeadless()) {
-      document.body.innerHTML = "<h2>🚫 Suspicious Browser</h2><p>Automation tools are not allowed.</p>";
-      throw new Error("Blocked headless browser.");
+      console.warn("Headless browser detected, but access is allowed.");
+      // Optionally, you can alert the user with a mild message:
+      // alert("Headless browser detected. Access granted, but performance may be affected.");
     }
 
     // Countdown & fingerprint trigger
