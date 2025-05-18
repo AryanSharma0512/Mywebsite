@@ -326,7 +326,7 @@ function showLoadingOverlay(action) {
   const loadingDiv = document.createElement('div');
   loadingDiv.id = 'photo-switch-loading';
   loadingDiv.textContent = 'Photo is loading...';
-  loadingDiv.className = 'loading-text';
+  loadingDiv.className = ''; // Ensure it doesn’t inherit the .loading-text from HD loader
   overlay.appendChild(loadingDiv);
 
   // Preload image

@@ -1603,7 +1603,20 @@ article figure img {
 }
 
 @keyframes pulse {
-  0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+  0%   { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%  { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
   100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+}
+
+#photo-switch-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  z-index: 999; /* ensure it's above everything */
+  pointer-events: none;
+  animation: pulse 1.5s infinite ease-in-out;
 }
