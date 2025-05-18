@@ -104,18 +104,26 @@ function handleHDLoaded(url) {
     color: '#fff',
     background: 'rgba(0,0,0,0.5)',
     padding: '0.5rem 1rem',
-    borderRadius: '4px'
+    borderRadius: '4px',
+    opacity: '1'
   });
   const viewerOverlay = document.querySelector('.viewer-overlay');
   if (viewerOverlay) {
     viewerOverlay.appendChild(hdStatus);
   }
+  
+  // Start fading out after 4 seconds
   hideHDStatusTimeout = setTimeout(() => {
     const hdStatusToRemove = document.getElementById('hd-status');
     if (hdStatusToRemove) {
-      hdStatusToRemove.remove();
+      hdStatusToRemove.style.transition = 'opacity 1s ease';
+      hdStatusToRemove.style.opacity = '0';
+      // Remove the element after the fade-out transition (1 second)
+      setTimeout(() => {
+        hdStatusToRemove.remove();
+      }, 1000);
     }
-  }, 7000);
+  }, 4000);
 }
 
 function loadHDImage() {
@@ -145,60 +153,24 @@ function loadHDImage() {
     return;
   }
 
-  // Setup UI overlay
-  imgElement.style.filter = 'blur(5px)';
+  // Set up UI overlay with the HD loader spinner
+  imgElement.classList.add('img-blur');
   const viewerOverlay = document.querySelector('.viewer-overlay');
+  const spinnerHD = document.createElement('span');
+  spinnerHD.className = 'loaderHD';
+  viewerOverlay.appendChild(spinnerHD);
 
-  const loadingText = document.createElement('div');
-  loadingText.id = 'loading-text';
-  loadingText.textContent = 'Image is loading...';
-  Object.assign(loadingText.style, {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    color: '#fff',
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
-    zIndex: 10,
-    pointerEvents: 'none'
-  });
-
-  const cancelBtn = document.createElement('button');
-  cancelBtn.id = 'cancel-hd-btn';
-  cancelBtn.textContent = '✖ Cancel HD';
-  Object.assign(cancelBtn.style, {
-    position: 'absolute',
-    bottom: '10px',
-    left: '10px',
-    padding: '6px 10px',
-    background: 'rgba(0,0,0,0.6)',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    zIndex: 10
-  });
-
-  if (viewerOverlay) viewerOverlay.appendChild(loadingText);
+  // Record start time to force a 2-second delay
+  const spinnerStart = Date.now();
 
   let abortController = new AbortController();
   const cancelTimeout = setTimeout(() => {
-    if (!document.getElementById('cancel-hd-btn')) {
-      viewerOverlay?.appendChild(cancelBtn);
-    }
+    // (Optional: append a cancel button here if needed)
   }, 5000);
 
-  cancelBtn.onclick = () => {
-    abortController.abort();
-    cleanupLoadingUI();
-    imgElement.src = getFullUrl(currentUrl); // fallback to non-HD
-  };
-
   function cleanupLoadingUI() {
-    imgElement.style.filter = '';
-    document.getElementById('loading-text')?.remove();
-    document.getElementById('cancel-hd-btn')?.remove();
+    imgElement.classList.remove('img-blur');
+    spinnerHD.remove();
     clearTimeout(cancelTimeout);
   }
 
@@ -216,20 +188,25 @@ function loadHDImage() {
         let rendered = false;
         imgElement.onload = () => {
           rendered = true;
-          cleanupLoadingUI();
-          handleHDLoaded(rawUrl);
+          // Determine remaining delay so total spinner time is 2 seconds
+          const elapsed = Date.now() - spinnerStart;
+          const remaining = Math.max(0, 2000 - elapsed);
+          setTimeout(() => {
+            cleanupLoadingUI();
+            handleHDLoaded(rawUrl);
+          }, remaining);
         };
 
-        // Fallback: force cleanup if onload doesn't fire
+        // Fallback: force cleanup if onload doesn't fire timely.
         setTimeout(() => {
           if (!rendered) {
             console.warn('⚠️ onload missed — forcing cleanup.');
-            imgElement.style.filter = '';
             cleanupLoadingUI();
             handleHDLoaded(rawUrl);
           }
         }, 5000);
 
+        // Trigger reloading: reset src then set new image
         imgElement.src = '';
         setTimeout(() => {
           imgElement.src = dataUrl;
@@ -242,7 +219,7 @@ function loadHDImage() {
         console.error('HD image load failed:', err);
       }
       cleanupLoadingUI();
-      imgElement.src = getFullUrl(currentUrl); // fallback
+      imgElement.src = getFullUrl(currentUrl); // fallback to non-HD
     });
 }
 
@@ -315,21 +292,19 @@ function showLoadingOverlay(action) {
 
   if (!imgElement || !overlay) return action();
 
-  // Blur current image via CSS class
+  // Blur the current image via CSS class
   imgElement.classList.add('img-blur');
 
   // Immediately hide both nav buttons using display property
   if (prevBtn) prevBtn.style.display = 'none';
   if (nextBtn) nextBtn.style.display = 'none';
 
-  // Show loading text using a CSS class
-  const loadingDiv = document.createElement('div');
-  loadingDiv.id = 'photo-switch-loading';
-  loadingDiv.textContent = 'Photo is loading...';
-  loadingDiv.className = ''; // Ensure it doesn’t inherit the .loading-text from HD loader
-  overlay.appendChild(loadingDiv);
+  // Create the loader element (spinner)
+  const loader = document.createElement('span');
+  loader.className = 'loader';
+  overlay.appendChild(loader);
 
-  // Preload image
+  // Preload next image in background (if applicable)
   const preloadUrl = photoArray[
     action === nextPhoto ? currentPhotoIndex + 1 :
     action === prevPhoto ? currentPhotoIndex - 1 :
@@ -338,14 +313,16 @@ function showLoadingOverlay(action) {
   const preImg = new Image();
   preImg.src = preloadUrl;
 
-  // After 1.5 seconds, remove overlay, unblur and call the switch action.
-  setTimeout(() => {
-    loadingDiv.remove();
-    imgElement.classList.remove('img-blur');
+  // Record spinner start time
+  const spinnerStart = Date.now();
 
-    // Execute the action (updatePhotoViewer will then restore correct nav buttons)
+  // Force a 2-second delay for the spinner
+  setTimeout(() => {
+    loader.remove();
+    imgElement.classList.remove('img-blur');
+    // Call the provided action to update the photo viewer
     action();
-  }, 1500);
+  }, 2000);
 }
 
 function prevPhoto() {
@@ -636,3 +613,48 @@ fetch('data/locations.json')
   .catch(err => console.error('Error loading location data', err));
 
 setTimeout(() => sessionStorage.setItem('hdLoadCount', '0'), 5 * 60 * 1000); // every 5 minutes
+
+function setupViewerControlsOpacity() {
+  const viewerContainers = document.querySelectorAll('#photo-viewer, #album-popup');
+
+  viewerContainers.forEach(container => {
+    // Note: update the selector to target your close button (here .viewer-close) in addition to prev/next buttons.
+    const buttons = container.querySelectorAll('.viewer-prev, .viewer-next, .viewer-close');
+    let idleTimer;
+
+    const fadeOutControls = () => {
+      buttons.forEach(btn => btn.classList.add('faded'));
+    };
+
+    const fadeInControls = () => {
+      buttons.forEach(btn => btn.classList.remove('faded'));
+    };
+
+    const resetIdleTimer = () => {
+      fadeInControls();
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        fadeOutControls();
+      }, 4000); // Wait 4 seconds before fading out (CSS transitions will control fade duration)
+    };
+
+    ['mousemove', 'click', 'keydown'].forEach(evt => {
+      container.addEventListener(evt, resetIdleTimer);
+    });
+
+    resetIdleTimer(); // initialize on load
+  });
+}
+  
+document.addEventListener('DOMContentLoaded', setupViewerControlsOpacity);
+
+document.addEventListener('keydown', (e) => {
+  const viewer = document.getElementById('photo-viewer');
+  if (viewer && viewer.style.display === 'flex') {
+    if (e.key === 'ArrowLeft') {
+      prevPhoto();
+    } else if (e.key === 'ArrowRight') {
+      nextPhoto();
+    }
+  }
+});
