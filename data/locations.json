@@ -94,7 +94,34 @@
             "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747431867/WhatsApp_Image_2025-05-16_at_23.44.07_7f0a662b_pnezr8.jpg",
             "date": "2025-05-16"
           }
-        ]
+        ],
+        "icon": "marker",
+        "albumId": "eiffel_tower"
+      },
+      {
+        "name": "Musée national de la Marine",
+        "lat": 48.862453,
+        "lng": 2.287425,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747599974/WhatsApp_Image_2025-05-18_at_22.24.43_e488c7d6_ycfju2.jpg",
+            "date": "2025-05-15"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747599956/WhatsApp_Image_2025-05-18_at_22.24.43_e031e6d0_zy0g3b.jpg",
+            "date": "2025-05-15"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747599967/WhatsApp_Image_2025-05-18_at_22.24.43_ad76bf1e_l6avdj.jpg",
+            "date": "2025-05-15"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747599961/WhatsApp_Image_2025-05-18_at_22.24.43_f2e60b03_cyzzjq.jpg",
+            "date": "2025-05-15"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "french_naval_museum"
       },
       {
         "name": "Malmaison Museum",
@@ -161,12 +188,56 @@
             "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424615/IMG-20250516-WA0011_zhs6mu.jpg",
             "date": "2025-05-12"
           }
-        ]
+        ],
+        "icon": "marker",
+        "albumId": "Times_square"
+      },
+      {
+        "name": "Penn Station",
+        "lat": 40.750505, 
+        "lng": -73.995042,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747602513/IMG-20250518-WA0270_ovsebn.jpg",
+            "date": "2025-05-12"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747602474/IMG-20250518-WA0292_tu9wcj.jpg",
+            "date": "2025-05-12"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747602501/IMG-20250518-WA0279_y6jqdf.jpg",
+            "date": "2025-05-12"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "Penn_station"
+      },
+      {
+        "name": "Wall Street",
+        "lat": 40.706325153692084,
+        "lng": -74.00941606281182,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747601366/IMG-20250518-WA0249_ehmbn0.jpg",
+            "date": "2025-05-12"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747601392/IMG-20250518-WA0243_v4jh9s.jpg",
+            "date": "2025-05-12"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747601509/IMG-20250518-WA0245_hswdoi.jpg",
+            "date": "2025-05-12"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "Wall_street"
       },
       {
         "name": "Central Park",
-        "lat": 40.7829,
-        "lng": -73.9654,
+        "lat": 40.768218,
+        "lng": -73.981519,
         "images": [
           {
             "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424619/IMG-20250516-WA0016_xz2xrj.jpg",
@@ -180,8 +251,8 @@
       },
       {
         "name": "The Vessel",
-        "lat": 40.7540,
-        "lng": -74.0027,
+        "lat": 40.753601,
+        "lng": -74.001797,
         "images": [
           {
             "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424624/IMG-20250516-WA0012_ybsavy.jpg",
@@ -191,22 +262,9 @@
             "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424616/IMG-20250516-WA0009_rajvak.jpg",
             "date": "2025-05-12"
           }
-        ]
-      },
-      {
-        "name": "Wall Street",
-        "lat": 40.7074,
-        "lng": -74.0113,
-        "images": [
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424616/IMG-20250516-WA0013_nxb0y3.jpg",
-            "date": "2025-05-12"
-          },
-          {
-            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424611/IMG-20250516-WA0010_eqt8sr.jpg",
-            "date": "2025-05-12"
-          }
-        ]
+        ],
+        "icon": "marker",
+        "albumId": "Hudson_yards"
       }
     ]
   },

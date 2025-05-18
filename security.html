@@ -153,13 +153,6 @@
       }
     }
 
-    // More lenient headless check: just log a warning rather than block.
-    if (isHeadless()) {
-      console.warn("Headless browser detected, but access is allowed.");
-      // Optionally, you can alert the user with a mild message:
-      // alert("Headless browser detected. Access granted, but performance may be affected.");
-    }
-
     // Countdown & fingerprint trigger
     let seconds = 7;
     const countdownEl = document.getElementById("countdown");

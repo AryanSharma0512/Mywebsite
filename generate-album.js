@@ -6,16 +6,16 @@ const cloudinary = require('cloudinary').v2;
 // 🔐 Cloudinary credentials
 cloudinary.config({
   cloud_name: 'da0nag1rl',
-  api_key:    '248635572727319',
-  api_secret: '-nyTK0Fteo4BG67br0ofct7igW8'
+  api_key:    '819592314158262',
+  api_secret: 'rfx5iSNy8HkFxFW6ZZab8VqidVc'
 });
 
 // 📂 Folder path & JSON album name
-const albumFolder  = 'photo dump/French museum';
-const albumId      = 'french_museum';
+const albumFolder  = 'photo dump/Penn station';
+const albumId      = 'Penn_station';
 const outputDir    = path.join(__dirname, 'data', 'albums');
 const outputFile   = path.join(outputDir, `${albumId}.json`);
-const capturedDate = '2025-05-17';
+const capturedDate = '2025-05-12';
 
 // ensure output directory exists
 fs.mkdirSync(outputDir, { recursive: true });

@@ -31,6 +31,9 @@ let showHDButtonTimeout;
 let hideHDStatusTimeout;
 let albumImages = [];
 let currentPage = 0;
+let rapidClickCount = 0;
+let rapidClickCooldown;
+
 const imagesPerPage = 25;
 const HD_CACHE_INDEX_KEY = 'hd_cache_index';
 const HD_CACHE_LIMIT = 5; // Store at most 5 HD images
@@ -292,55 +295,85 @@ function showLoadingOverlay(action) {
 
   if (!imgElement || !overlay) return action();
 
-  // Blur the current image via CSS class
+  // Blur current image
   imgElement.classList.add('img-blur');
 
-  // Immediately hide both nav buttons using display property
+  // Hide navigation buttons during load
   if (prevBtn) prevBtn.style.display = 'none';
   if (nextBtn) nextBtn.style.display = 'none';
 
-  // Create the loader element (spinner)
+  const existingLoader = overlay.querySelector('.loader');
+  if (existingLoader) existingLoader.remove();
+  // Add loading spinner
   const loader = document.createElement('span');
   loader.className = 'loader';
   overlay.appendChild(loader);
 
-  // Preload next image in background (if applicable)
-  const preloadUrl = photoArray[
-    action === nextPhoto ? currentPhotoIndex + 1 :
-    action === prevPhoto ? currentPhotoIndex - 1 :
-    currentPhotoIndex
-  ];
-  const preImg = new Image();
-  preImg.src = preloadUrl;
 
-  // Record spinner start time
-  const spinnerStart = Date.now();
+  // Start switching image immediately
+  action();
 
-  // Force a 2-second delay for the spinner
-  setTimeout(() => {
-    loader.remove();
-    imgElement.classList.remove('img-blur');
-    // Call the provided action to update the photo viewer
-    action();
-  }, 2000);
+  // Wait for new image to load visually
+  const nextImg = document.getElementById('viewer-img');
+  nextImg.onload = () => {
+    requestAnimationFrame(() => {
+      loader.remove();
+      imgElement.classList.remove('img-blur');
+    }); // Optional delay to smooth out UX
+  };
 }
+
 
 function prevPhoto() {
-  if (currentPhotoIndex > 0) {
-    showLoadingOverlay(() => {
-      currentPhotoIndex--;
-      updatePhotoViewer();
-    });
+  if (currentPhotoIndex <= 0) return;
+
+  rapidClickCount++;
+
+  const triggerViewerUpdate = () => {
+    currentPhotoIndex--;
+    updatePhotoViewer();
+  };
+
+  if (rapidClickCount > 2) {
+    setTimeout(() => {
+      rapidClickCount = 0;
+      showLoadingOverlay(triggerViewerUpdate);
+    }, 2000);
+  } else {
+    showLoadingOverlay(triggerViewerUpdate);
   }
+
+  clearTimeout(rapidClickCooldown);
+  rapidClickCooldown = setTimeout(() => {
+    rapidClickCount = 0;
+  }, 3000);
 }
 
+
 function nextPhoto() {
-  if (currentPhotoIndex < photoArray.length - 1) {
-    showLoadingOverlay(() => {
-      currentPhotoIndex++;
-      updatePhotoViewer();
-    }); 
+  if (currentPhotoIndex >= photoArray.length - 1) return;
+
+  rapidClickCount++;
+
+  const triggerViewerUpdate = () => {
+    currentPhotoIndex++;
+    updatePhotoViewer();
+  };
+
+  if (rapidClickCount > 2) {
+    setTimeout(() => {
+      rapidClickCount = 0;
+      showLoadingOverlay(triggerViewerUpdate);
+    }, 2000);
+  } else {
+    showLoadingOverlay(triggerViewerUpdate);
   }
+
+  clearTimeout(rapidClickCooldown);
+  rapidClickCooldown = setTimeout(() => {
+    rapidClickCount = 0;
+  }, 3000);
+
 }
 
 // Fetch city/place data
