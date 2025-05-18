@@ -11,11 +11,11 @@ cloudinary.config({
 });
 
 // 📂 Folder path & JSON album name
-const albumFolder  = 'photo dump/French museum';
-const albumId      = 'french_museum';
+const albumFolder  = 'photo dump/Munnar';
+const albumId      = 'Munar_trip';
 const outputDir    = path.join(__dirname, 'data', 'albums');
 const outputFile   = path.join(outputDir, `${albumId}.json`);
-const capturedDate = '2025-05-17';
+const capturedDate = '2024-04-21';
 
 // ensure output directory exists
 fs.mkdirSync(outputDir, { recursive: true });

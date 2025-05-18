@@ -445,5 +445,156 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Kodai kanal",
+    "lat": 10.241526,
+    "lng": 77.491134,
+    "city": true,
+    "places": [
+      {
+        "name": "Kodai Mist Resort",
+        "lat": 10.251188,
+        "lng": 77.461118,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747560680/IMG-20250518-WA0004_mkjl3u.jpg",
+            "date": "2024-04-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747560681/IMG-20250518-WA0006_v3iyna.jpg",
+            "date": "2024-04-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747560680/IMG-20250518-WA0005_knvqxo.jpg",
+            "date": "2024-04-19"
+          }
+        ]
+      },
+      {
+        "name": "Kodai Lake",
+        "lat": 10.238165,
+        "lng": 77.488488,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747562565/WhatsApp_Image_2025-05-18_at_12.00.12_2a837cd8_r7zelt.jpg",
+            "date": "2024-04-19"
+          }
+        ]
+      },
+      {
+        "name": "Bryant Park",
+        "lat": 10.231004,
+        "lng": 77.491859,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747560867/IMG-20250518-WA0009_jo0cxw.jpg",
+            "date": "2024-04-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747560868/IMG-20250518-WA0008_gxtdsg.jpg",
+            "date": "2024-04-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747560869/IMG-20250518-WA0007_w0s1y7.jpg",
+            "date": "2024-04-19"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "Bryant_park"
+      },
+      {
+        "name": "Indian Institute of Astrophysics (Museum part)",
+        "lat": 10.228765,
+        "lng": 77.462811,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747561538/IMG-20250518-WA0013_yiudir.jpg",
+            "date": "2024-04-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747561538/IMG-20250518-WA0012_ghdyli.jpg",
+            "date": "2024-04-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747561537/IMG-20250518-WA0010_apaxdl.jpg",
+            "date": "2024-04-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747561537/IMG-20250518-WA0011_bx9ccv.jpg",
+            "date": "2024-04-19"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "Kodai_museum"
+      }
+    ]
+  },
+  {
+    "name": "Munnar",
+    "lat": 10.086629,
+    "lng": 77.063142,
+    "city": true,
+    "places": [
+      {
+        "name": "NH 85",
+        "lat": 10.081408,
+        "lng": 77.076643,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747563776/WhatsApp_Image_2025-05-18_at_12.22.41_ddf3cd3f_m4y0as.jpg",
+            "date": "2024-04-21"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747563782/WhatsApp_Image_2025-05-18_at_12.22.41_dc2887d5_dmpdcb.jpg",
+            "date": "2024-04-21"
+          }
+        ]
+      },
+      {
+        "name": "NH 85 (tea gardens)",
+        "lat": 10.072235,
+        "lng": 77.093636,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747564232/WhatsApp_Image_2025-05-18_at_12.29.51_a8c688e5_oxuqmi.jpg",
+            "date": "2024-04-21"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747564227/WhatsApp_Image_2025-05-18_at_12.29.51_993b0c22_b61sjg.jpg",
+            "date": "2024-04-21"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747564239/WhatsApp_Image_2025-05-18_at_12.29.51_267cb2e3_pvacn3.jpg",
+            "date": "2024-04-21"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "Munnar_trip"
+      }
+    ]
+  },
+  {
+    "name": "Niagara Falls",
+    "lat": 43.0962,
+    "lng": -79.0377,
+    "city": true,
+    "places": [
+      {
+        "name": "Main Falls",
+        "lat": 43.0852,
+        "lng": -79.0645,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424627/IMG-20250516-WA0008_ltin9l.jpg",
+            "date": "2023-08-21"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747424609/IMG-20250516-WA0007_aka9yk.jpg",
+            "date": "2023-08-21"
+          }
+        ]
+      }
+    ]
   }
 ]
