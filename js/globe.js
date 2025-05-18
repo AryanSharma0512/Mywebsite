@@ -20,7 +20,7 @@ function getCookie(name) {
 function setCookie(name, value, days) {
   const date = new Date();
   date.setTime(date.getTime() + days * 86400000);
-  document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+  document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/;SameSite=Strict;Secure`;
 }
 
 // Global State
@@ -32,6 +32,12 @@ let hideHDStatusTimeout;
 let albumImages = [];
 let currentPage = 0;
 const imagesPerPage = 25;
+const HD_CACHE_INDEX_KEY = 'hd_cache_index';
+const HD_CACHE_LIMIT = 5; // Store at most 5 HD images
+
+// At the top of your file, initialize once per session
+let hdLoadCount = Number(sessionStorage.getItem('hdLoadCount')) || 0;
+const HD_LOAD_LIMIT = 20;
 
 // Photo Viewer Functions
 function updatePhotoViewer() {
@@ -50,6 +56,12 @@ function updatePhotoViewer() {
   }
   clearTimeout(showHDButtonTimeout);
   clearTimeout(hideHDStatusTimeout);
+
+  // Hide/show prev/next buttons based on index
+  const prevBtn = document.querySelector('.viewer-prev');
+  const nextBtn = document.querySelector('.viewer-next');
+  if (prevBtn) prevBtn.style.display = currentPhotoIndex > 0 ? 'block' : 'none';
+  if (nextBtn) nextBtn.style.display = currentPhotoIndex < photoArray.length - 1 ? 'block' : 'none';
 
   const isHDLoaded = getCookie(hdCookieName) === 'true';
   const cacheKey = 'hd_' + currentUrl;
@@ -107,26 +119,36 @@ function handleHDLoaded(url) {
 }
 
 function loadHDImage() {
+  if (hdLoadCount >= HD_LOAD_LIMIT) {
+    alert('Too many HD requests in one session. Please wait.');
+    return;
+  }
+  hdLoadCount++;
+  sessionStorage.setItem('hdLoadCount', hdLoadCount);
+
   const imgElement = document.getElementById('viewer-img');
   const currentUrl = photoArray[currentPhotoIndex];
-  const cacheKey = 'hd_' + currentUrl;
+  const isAlreadyHD = !/\/c_.*?\//.test(currentUrl);
+  const rawUrl = isAlreadyHD ? currentUrl : currentUrl.replace(/\/upload\/[^/]+\//, '/upload/');
+  const cacheKey = 'hd_' + rawUrl;
 
-  setCookie(HD_COOKIE_PREFIX + btoa(currentUrl), 'true', 365);
+  setCookie(HD_COOKIE_PREFIX + btoa(rawUrl), 'true', 365);
   const loadHDButton = document.getElementById('load-hd-btn');
-  if (loadHDButton) {
-    loadHDButton.style.display = 'none';
-  }
+  if (loadHDButton) loadHDButton.style.display = 'none';
 
+  // Check for cached HD image
   const cachedHD = localStorage.getItem(cacheKey);
   if (cachedHD) {
     imgElement.onload = null;
     imgElement.src = cachedHD;
-    handleHDLoaded(currentUrl);
+    handleHDLoaded(rawUrl);
     return;
   }
 
-  // Add blur and loading text
+  // Setup UI overlay
   imgElement.style.filter = 'blur(5px)';
+  const viewerOverlay = document.querySelector('.viewer-overlay');
+
   const loadingText = document.createElement('div');
   loadingText.id = 'loading-text';
   loadingText.textContent = 'Image is loading...';
@@ -139,15 +161,48 @@ function loadHDImage() {
     fontSize: '1.2rem',
     fontWeight: 'bold',
     zIndex: 10,
-    pointerEvents: 'none',
+    pointerEvents: 'none'
   });
-  const viewerOverlay = document.querySelector('.viewer-overlay');
-  if (viewerOverlay) {
-    viewerOverlay.appendChild(loadingText);
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.id = 'cancel-hd-btn';
+  cancelBtn.textContent = '✖ Cancel HD';
+  Object.assign(cancelBtn.style, {
+    position: 'absolute',
+    bottom: '10px',
+    left: '10px',
+    padding: '6px 10px',
+    background: 'rgba(0,0,0,0.6)',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    zIndex: 10
+  });
+
+  if (viewerOverlay) viewerOverlay.appendChild(loadingText);
+
+  let abortController = new AbortController();
+  const cancelTimeout = setTimeout(() => {
+    if (!document.getElementById('cancel-hd-btn')) {
+      viewerOverlay?.appendChild(cancelBtn);
+    }
+  }, 5000);
+
+  cancelBtn.onclick = () => {
+    abortController.abort();
+    cleanupLoadingUI();
+    imgElement.src = getFullUrl(currentUrl); // fallback to non-HD
+  };
+
+  function cleanupLoadingUI() {
+    imgElement.style.filter = '';
+    document.getElementById('loading-text')?.remove();
+    document.getElementById('cancel-hd-btn')?.remove();
+    clearTimeout(cancelTimeout);
   }
 
-  // Fetch the raw HD image
-  fetch(currentUrl)
+  fetch(rawUrl, { signal: abortController.signal })
     .then(res => {
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       return res.blob();
@@ -156,33 +211,88 @@ function loadHDImage() {
       const reader = new FileReader();
       reader.onloadend = () => {
         const dataUrl = reader.result;
-        localStorage.setItem(cacheKey, dataUrl);
+        tryToCacheHDImage(cacheKey, dataUrl);
+
+        let rendered = false;
         imgElement.onload = () => {
-          imgElement.style.filter = '';
-          const loadingTextElement = document.getElementById('loading-text');
-          if (loadingTextElement) {
-            loadingTextElement.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
-            loadingTextElement.style.opacity = '0';
-            loadingTextElement.style.transform = 'translate(-50%, -80%)';
-            setTimeout(() => {
-              loadingTextElement.remove();
-              handleHDLoaded(currentUrl);
-            }, 500);
-          } else {
-            handleHDLoaded(currentUrl);
-          }
+          rendered = true;
+          cleanupLoadingUI();
+          handleHDLoaded(rawUrl);
         };
+
+        // Fallback: force cleanup if onload doesn't fire
+        setTimeout(() => {
+          if (!rendered) {
+            console.warn('⚠️ onload missed — forcing cleanup.');
+            imgElement.style.filter = '';
+            cleanupLoadingUI();
+            handleHDLoaded(rawUrl);
+          }
+        }, 5000);
+
         imgElement.src = '';
         setTimeout(() => {
           imgElement.src = dataUrl;
-        }, 100);
+        }, 50);
       };
       reader.readAsDataURL(blob);
     })
     .catch(err => {
-      console.error('HD image load failed:', err);
-      imgElement.src = getFullUrl(currentUrl);
+      if (err.name !== 'AbortError') {
+        console.error('HD image load failed:', err);
+      }
+      cleanupLoadingUI();
+      imgElement.src = getFullUrl(currentUrl); // fallback
     });
+}
+
+function tryToCacheHDImage(key, value) {
+  // Load current cache index or start with an empty array
+  const cacheIndex = JSON.parse(localStorage.getItem(HD_CACHE_INDEX_KEY) || '[]');
+
+  function evictOldest() {
+    const oldestKey = cacheIndex.shift();
+    if (oldestKey) {
+      localStorage.removeItem(oldestKey);
+      localStorage.setItem(HD_CACHE_INDEX_KEY, JSON.stringify(cacheIndex));
+    }
+  }
+
+  // Try saving, evict if needed
+  while (true) {
+    try {
+      localStorage.setItem(key, value);
+      
+      // Update LRU index: remove key if already exists and then push it to make it newest
+      const newCache = cacheIndex.filter(k => k !== key);
+      newCache.push(key);
+      // Enforce cache size limit
+      while (newCache.length > HD_CACHE_LIMIT) {
+        newCache.shift();
+      }
+      localStorage.setItem(HD_CACHE_INDEX_KEY, JSON.stringify(newCache));
+      break;
+    } catch (e) {
+      if (e.name === 'QuotaExceededError') {
+        console.warn('⛔ Quota exceeded. Evicting oldest item...');
+        if (cacheIndex.length > 0) {
+          evictOldest();
+        } else {
+          console.warn('⚠️ Nothing left to evict. Skipping cache.');
+          break;
+        }
+      } else {
+        console.error('Unexpected cache error:', e);
+        break;
+      }
+    }
+  }
+}
+
+function hashImage(dataUrl) {
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(dataUrl))
+    .then(buf => Array.from(new Uint8Array(buf))
+      .map(b => b.toString(16).padStart(2, '0')).join(''));
 }
 
 // Viewer Controls
@@ -197,17 +307,62 @@ function closePhotoViewer() {
   document.getElementById('photo-viewer').style.display = 'none';
 }
 
+function showLoadingOverlay(action) {
+  const imgElement = document.getElementById('viewer-img');
+  const overlay = document.querySelector('.viewer-overlay');
+  const prevBtn = document.querySelector('.viewer-prev');
+  const nextBtn = document.querySelector('.viewer-next');
+
+  if (!imgElement || !overlay) return action();
+
+  // Blur current image via CSS class
+  imgElement.classList.add('img-blur');
+
+  // Immediately hide both nav buttons using display property
+  if (prevBtn) prevBtn.style.display = 'none';
+  if (nextBtn) nextBtn.style.display = 'none';
+
+  // Show loading text using a CSS class
+  const loadingDiv = document.createElement('div');
+  loadingDiv.id = 'photo-switch-loading';
+  loadingDiv.textContent = 'Photo is loading...';
+  loadingDiv.className = 'loading-text';
+  overlay.appendChild(loadingDiv);
+
+  // Preload image
+  const preloadUrl = photoArray[
+    action === nextPhoto ? currentPhotoIndex + 1 :
+    action === prevPhoto ? currentPhotoIndex - 1 :
+    currentPhotoIndex
+  ];
+  const preImg = new Image();
+  preImg.src = preloadUrl;
+
+  // After 1.5 seconds, remove overlay, unblur and call the switch action.
+  setTimeout(() => {
+    loadingDiv.remove();
+    imgElement.classList.remove('img-blur');
+
+    // Execute the action (updatePhotoViewer will then restore correct nav buttons)
+    action();
+  }, 1500);
+}
+
 function prevPhoto() {
   if (currentPhotoIndex > 0) {
-    currentPhotoIndex--;
-    updatePhotoViewer();
+    showLoadingOverlay(() => {
+      currentPhotoIndex--;
+      updatePhotoViewer();
+    });
   }
 }
 
 function nextPhoto() {
   if (currentPhotoIndex < photoArray.length - 1) {
-    currentPhotoIndex++;
-    updatePhotoViewer();
+    showLoadingOverlay(() => {
+      currentPhotoIndex++;
+      updatePhotoViewer();
+    }); 
   }
 }
 
@@ -250,8 +405,8 @@ fetch('data/locations.json')
     const globeViz = document.getElementById('globeViz');
     if (globeViz) {
       const globe = Globe()(globeViz)
-        .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
-        .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+        .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+        .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
         .onGlobeReady(() => {
           globe.controls().target.set(0, 0, 0);
           globe.camera().position.set(0, 0, 330);
@@ -479,3 +634,5 @@ fetch('data/locations.json')
     }
   })
   .catch(err => console.error('Error loading location data', err));
+
+setTimeout(() => sessionStorage.setItem('hdLoadCount', '0'), 5 * 60 * 1000); // every 5 minutes
