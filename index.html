@@ -43,7 +43,7 @@
     <div class="profile-photo-wrapper">
       <img src="images/AryanPhoto.jpg" alt="Professional headshot of Aryan Sharma" class="profile-photo">
     </div>
-    <p class="bio">I’m Aryan Sharma, an Agricultural Systems Management major at Purdue University. Over my first year here, I’ve explored intercultural communication through SCLA courses, tackled data-driven projects in ASM labs, and pursued my passions for travel and coding. You might wonder why an ag major dives deeper into programming than many CS students—I’m driven by a love for problem-solving with code and the AI agents now at our fingertips. This site reflects my academic, cultural, and personal growth.</p>
+    <p class="bio">I’m Aryan Sharma, an Agricultural Systems Management major at Purdue University. I’ve always been drawn to the intersection of technology and real-world systems—whether that’s in agriculture, travel, or how we interact with the world around us. What started as a curiosity for coding has evolved into a deep interest in building things that work smarter, faster, and more intuitively. This site is a reflection of that mindset: thoughtful, evolving, and driven by exploration.</p>
   </main>
   <a href="https://ring.purduehackers.com/next?host=www.aboutsharma.com">→</a>
   <a href="https://ring.purduehackers.com/previous?host=www.aboutsharma.com">←</a>
@@ -59,6 +59,19 @@
       document.querySelector('.nav-links').classList.toggle('show');
     });
   </script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const introText = document.querySelector('#home-hero .intro-text');
+        if (introText) {
+          introText.classList.add('gif-faded');
+        }
+      }, 4000); // 4 seconds = 3s delay + 1s fade
+    });
+  </script>
+  <script src="js/name-typer.js"></script>
+
+
 
 </body>
 </html>
