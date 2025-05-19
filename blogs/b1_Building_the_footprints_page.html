@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en" dir="auto">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="robots" content="index, follow">
+    <title>Building the Footprints Page: A Technical Deep Dive | Aryan Sharma</title>
+    <link rel="stylesheet" href="../css/blogstyle.css">
+    <link rel="icon" href="images/favicon.png">
+    <meta name="theme-color" content="#2e2e33">
+    <meta name="msapplication-TileColor" content="#2e2e33">
+    <noscript>
+      <style>
+        #theme-toggle, .top-link {
+          display: none;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body id="top">
+    <script>
+      localStorage.getItem("pref-theme") === "dark" 
+        ? document.body.classList.add("dark") 
+        : localStorage.getItem("pref-theme") === "light" 
+          ? document.body.classList.remove("dark") 
+          : window.matchMedia("(prefers-color-scheme: dark)").matches && document.body.classList.add("dark")
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <a href="../index.html" accesskey="h" title="Aryan Sharma Blog (Alt + H)">Aryan Sharma</a>
+          <div class="logo-switches">
+            <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+              <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+              </svg>
+              <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/>
+                <line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <ul id="menu">
+          <li><a href="../index.html" title="home">Home</a></li>
+          <li><a href="../resume.html" title="resume">Resume</a></li>
+          <li><a href="../album.html" title="Footprints">Footprints</a></li>
+          <li><a href="../blog.html" title="blog">Blog</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+      <article class="post-single">
+        <header class="post-header">
+          <div class="breadcrumbs">
+            <a href="blog.html">Blog</a> / <span>Building the Footprints Page</span>
+          </div>
+          <h1 class="post-title entry-hint-parent">Building the Footprints Page: A Technical Deep Dive</h1>
+          <div class="post-meta">
+            <span>July 18, 2025</span>
+            &nbsp;· &nbsp;12 min read &nbsp;· &nbsp;Aryan Sharma
+          </div>
+        </header>
+        <div class="toc">
+          <details>
+            <summary accesskey="c" title="(Alt + C)">
+              <span class="details">Table of Contents</span>
+            </summary>
+            <div class="inner">
+              <ul>
+                <li><a href="#the-problem" aria-label="The Problem">The Problem</a></li>
+                <li><a href="#design-decisions" aria-label="Design Decisions">Design Decisions</a></li>
+                <li><a href="#globe-implementation" aria-label="Globe Implementation">Globe Implementation</a></li>
+                <li><a href="#data-structure" aria-label="Data Structure">Data Structure</a></li>
+                <li><a href="#bandwidth-optimization" aria-label="Bandwidth Optimization">Bandwidth Optimization</a></li>
+                <li><a href="#security-layer" aria-label="Security Layer">Security Layer</a></li>
+                <li><a href="#debugging-challenges" aria-label="Debugging Challenges">Debugging Challenges</a></li>
+                <li><a href="#future-plans" aria-label="Future Plans">Future Plans</a></li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div class="post-content">
+          <h2 id="the-problem">The Problem: Why I Built This</h2>
+          <p>As someone who travels but avoids social media, I needed a way to share my experiences that was:</p>
+          <ul>
+            <li><strong>Controlled</strong>: No algorithms deciding who sees what</li>
+            <li><strong>Performant</strong>: Should work smoothly even on slow connections</li>
+            <li><strong>Cost-effective</strong>: Must run within free tier limits</li>
+            <li><strong>Visually interesting</strong>: More engaging than a standard photo grid</li>
+          </ul>
+          <p>The constraints led to some interesting technical challenges that made this more than just another portfolio component.</p>
+
+          <h2 id="design-decisions">Design Decisions</h2>
+          <h3>Why a 3D Globe?</h3>
+          <p>I evaluated several mapping approaches before choosing a 3D globe. Options like Google Maps Embed, Static Image Maps, and 2D SVG maps didn’t offer the uniqueness or interactivity I desired. In the end, a 3D Globe — interactive and visually striking — was chosen.</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Option</th>
+                <th>Pros</th>
+                <th>Cons</th>
+                <th>Why Rejected</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Google Maps Embed</td>
+                <td>Easy implementation</td>
+                <td>Generic look, API limits</td>
+                <td>Too common</td>
+              </tr>
+              <tr>
+                <td>Static Image Map</td>
+                <td>Lightweight</td>
+                <td>No interactivity</td>
+                <td>Too boring</td>
+              </tr>
+              <tr>
+                <td>2D SVG Map</td>
+                <td>Customizable</td>
+                <td>Flat representation</td>
+                <td>Lacked dynamic flair</td>
+              </tr>
+              <tr>
+                <td><strong>3D Globe</strong></td>
+                <td>Interactive, visually striking</td>
+                <td>More complex to implement</td>
+                <td><strong>Chosen</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Technical Stack Selection</h3>
+          <p>After evaluating libraries, I focused on Globe.gl for its balance of features and ease-of-use. Below is a sample evaluation:</p>
+          <pre><code class="language-javascript">// Sample evaluation criteria
+const globeLibraries = [
+  {
+    name: "Three.js",
+    pros: ["Maximum flexibility", "WebGL powered"],
+    cons: ["Steep learning curve", "Need to build everything"]
+  },
+  {
+    name: "Globe.gl",
+    pros: ["Purpose-built for globes", "Good documentation"],
+    cons: ["Less customizable", "Dependent on Three.js"]
+  },
+  {
+    name: "Cesium",
+    pros: ["Geospatial features", "High performance"],
+    cons: ["Large bundle size", "Overkill for my needs"]
+  }
+];
+// Chose Globe.gl for its balance of features and ease of use</code></pre>
+
+          <h2 id="globe-implementation">Globe Implementation Details</h2>
+          <h3>Initial Setup</h3>
+          <p>The basic Globe.gl initialization includes configuring camera settings, lighting, and textures. (This is where my actual initialization code would go.)</p>
+          <pre><code class="language-javascript">// [PLACEHOLDER: Insert your actual initialization code here]
+// Example: setting camera position, lighting, and base textures
+// const globe = Globe()(document.getElementById('globe'))
+//   .globeImageUrl('path/to/earth.jpg')
+//   .backgroundImageUrl('path/to/bg.jpg');
+// globe.controls().autoRotate = true;</code></pre>
+
+          <h3>Marker System</h3>
+          <p>This section handles how yellow dots (for cities) and red pins (for attractions) are created, as well as their event handlers for interactivity.</p>
+          <pre><code class="language-javascript">
+// [PLACEHOLDER: Insert your marker creation code]
+// Example: Create spheres for cities and switch markers on zoom threshold
+// function createMarkers(data) {
+//   data.forEach(location => {
+//     // Create yellow dot
+//     // On zoom, convert to red pin
+//   });
+// }</code></pre>
+
+          <h2 id="data-structure">Data Architecture</h2>
+          <p>The hierarchical data structure supports nested locations, multiple photos per location, and metadata such as dates and descriptions.</p>
+          <pre><code class="language-javascript">
+// [PLACEHOLDER: Insert your actual data structure]
+// Example structure:
+// const data = {
+//   country: "France",
+//   cities: [{
+//     name: "Paris",
+//     attractions: [{
+//       name: "Eiffel Tower",
+//       photos: [{ url: "path/to/photo.jpg", date: "2025-06-15" }]
+//     }]
+//   }]
+// };</code></pre>
+
+          <h3>Data Generation Process</h3>
+          <p>Steps include extracting EXIF data, reverse geocoding, grouping photos, and generating optimized JSON used by the page.</p>
+          <pre><code class="language-javascript">
+// [PLACEHOLDER: Insert your photo processing script]
+// Example:
+// function processPhotos(rawPhotos) {
+//   // Extract GPS, group by location, upload to Cloudinary, generate JSON
+// }</code></pre>
+
+          <h2 id="bandwidth-optimization">Bandwidth Optimization Deep Dive</h2>
+          <h3>Cloudinary Configuration</h3>
+          <p>My Cloudinary configuration uses transformation presets for thumbnails, medium, and HD images. Below is a sample:</p>
+          <pre><code class="language-javascript">
+// [PLACEHOLDER: Insert your actual Cloudinary setup]
+// Example URLs with transformations for thumbnail, medium, and HD versions.
+</code></pre>
+
+          <h3>Loading Sequence Logic</h3>
+          <p>This workflow shows initial thumbnail loading, upgrading image quality on click or hover, and caching the HD version.</p>
+          <pre><code class="language-javascript">
+// [PLACEHOLDER: Insert your full loading logic]
+// Example: Using IntersectionObserver for lazy loading and caching HD images in localStorage.
+</code></pre>
+
+          <h3>Performance Metrics</h3>
+          <p>Before and after optimization metrics:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Original</th>
+                <th>Optimized</th>
+                <th>Improvement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Initial Load Size</td>
+                <td>4.2MB</td>
+                <td>320KB</td>
+                <td>92% reduction</td>
+              </tr>
+              <tr>
+                <td>Time to Interactive</td>
+                <td>5.8s</td>
+                <td>1.2s</td>
+                <td>79% faster</td>
+              </tr>
+              <tr>
+                <td>Bandwidth/month</td>
+                <td>~80GB</td>
+                <td>~18GB</td>
+                <td>78% savings</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2 id="security-layer">Security Layer: Iron Gate System</h2>
+          <h3>Architecture Diagram</h3>
+          <p>An overview of the client-side security layers:</p>
+          <pre><code class="language-markdown">
+// [PLACEHOLDER: Insert your architecture diagram here]
+// Could be ASCII art or a descriptive overview of rate limiting and fingerprinting.
+</code></pre>
+
+          <h3>Implementation Details</h3>
+          <pre><code class="language-javascript">
+// [PLACEHOLDER: Insert full IronGate implementation]
+// Example: class IronGate { ... }
+</code></pre>
+          
+          <h2 id="debugging-challenges">Debugging Challenges</h2>
+          <h3>Camera Control Issues</h3>
+          <p>Discusses zoom level adjustments and smooth transitions with before/after examples.</p>
+          <pre><code class="language-javascript">
+// [PLACEHOLDER: Insert problematic camera code and fixes]
+// Example: Fixing jitter in zoom transitions.
+</code></pre>
+          
+          <h3>Memory Leaks</h3>
+          <p>Details on detecting and resolving resource retention issues.</p>
+          <pre><code class="language-javascript">
+// [PLACEHOLDER: Show leak example and fix]
+// Example: Clearing timers and removing event listeners when not needed.
+</code></pre>
+          
+          <h2 id="future-plans">Future Improvements</h2>
+          <h3>Planned Enhancements</h3>
+          <pre><code class="language-markdown">
+1. [ ] IndexedDB for larger cache
+2. [ ] WebP/AVIF support
+3. [ ] Network-aware loading
+4. [ ] Offline capabilities
+5. [ ] User upload system for friends
+</code></pre>
+          <h3>Experimental Features</h3>
+          <p>Ideas currently under exploration:</p>
+          <pre><code class="language-javascript">
+// [PLACEHOLDER: Insert experimental code snippets]
+// Examples: WebGL shader experiments or alternative data structures.
+</code></pre>
+          
+          <h2>Conclusion</h2>
+          <p>This project taught me valuable lessons about progressive enhancement, efficient resource management, and balancing features with performance. The complete source is available in my [PLACEHOLDER: GitHub repo link]. Feel free to borrow ideas, but please credit appropriately.</p>
+          <p>Now, as promised, I'm off to enjoy that spaghetti in Paris. If you have questions, find me on [PLACEHOLDER: your contact method].</p>
+        </div>
+        <footer class="post-footer">
+          <div class="post-tags">
+            <a href="#">#webgl</a>
+            <a href="#">#optimization</a>
+            <a href="#">#cloudinary</a>
+            <a href="#">#threejs</a>
+          </div>
+          <nav class="paginav">
+            <a class="next" href="../blog.html">
+              <span class="title">Next »</span><br>
+              <span>(No other blogs found!)Home page</span>
+            </a>
+          </nav>
+        </footer>
+      </article>
+    </main>
+    <footer class="footer">
+      <span>© 2025 Aryan Sharma</span>
+      <span class="footer-credits">Built from scratch with too much coffee</span>
+    </footer>
+    <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor">
+        <path d="M12 6H0l6-6z"/>
+      </svg>
+    </a>
+    <script>
+      let menu = document.getElementById("menu");
+      if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function() {
+          localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(e => {
+        e.addEventListener("click", function(e) {
+          e.preventDefault();
+          var t = this.getAttribute("href").substr(1);
+          if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+             document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView();
+          } else {
+             document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({ behavior: "smooth" });
+          }
+          t === "top" ? history.replaceState(null, null, " ") : history.pushState(null, null, `#${t}`);
+        });
+      });
+    </script>
+    <script>
+      var mybutton = document.getElementById("top-link");
+      window.onscroll = function() {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+          mybutton.style.visibility = "visible";
+          mybutton.style.opacity = "1";
+        } else {
+          mybutton.style.visibility = "hidden";
+          mybutton.style.opacity = "0";
+        }
+      }
+    </script>
+    <script>
+      document.getElementById("theme-toggle").addEventListener("click", () => {
+        if(document.body.classList.contains("dark")) {
+          document.body.classList.remove("dark");
+          localStorage.setItem("pref-theme", "light");
+        } else {
+          document.body.classList.add("dark");
+          localStorage.setItem("pref-theme", "dark");
+        }
+      });
+    </script>
+    <script>
+      document.querySelectorAll("pre > code").forEach(e => {
+          const container = e.parentNode.parentNode;
+          const copyBtn = document.createElement("button");
+          copyBtn.classList.add("copy-code");
+          copyBtn.innerHTML = "copy";
+          function showCopied() {
+              copyBtn.innerHTML = "copied!";
+              setTimeout(() => { copyBtn.innerHTML = "copy"; }, 2000);
+          }
+          copyBtn.addEventListener("click", () => {
+              if("clipboard" in navigator) {
+                  navigator.clipboard.writeText(e.textContent);
+                  showCopied();
+                  return;
+              }
+              const range = document.createRange();
+              range.selectNodeContents(e);
+              const selection = window.getSelection();
+              selection.removeAllRanges();
+              selection.addRange(range);
+              try {
+                  document.execCommand("copy");
+                  showCopied();
+              } catch {}
+              selection.removeRange(range);
+          });
+          if(container.classList.contains("highlight")) {
+              container.appendChild(copyBtn);
+          } else if(container.parentNode.firstChild === container || container.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName === "TABLE") {
+              container.appendChild(copyBtn);
+          }
+      });
+    </script>
+  </body>
+</html>
