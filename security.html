@@ -73,7 +73,7 @@
     <h2>🛡️ IronGate<sup style="font-size: 0.5em;">™</sup> Deployed 🛡️</h2>
     <p>We are currently checking your browser as our servers are under increased load.</p>
     <p>Your access will be granted in:</p>
-    <div class="countdown" id="countdown">7</div>
+    <div class="countdown" id="countdown">4</div>
     <p>Traffic on the website is currently: <span class="low-traffic">Low</span>.</p>
     <p class="thank-you">Thank you.</p>
   </div>
@@ -154,8 +154,9 @@
     }
 
     // Countdown & fingerprint trigger
-    let seconds = 7;
+    let seconds = 4; // Changed from 7 to 4 seconds
     const countdownEl = document.getElementById("countdown");
+    countdownEl.textContent = seconds; // Set initial countdown text
     const timer = setInterval(() => {
       seconds--;
       countdownEl.textContent = seconds;

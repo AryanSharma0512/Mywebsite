@@ -65,8 +65,8 @@
           </div>
           <h1 class="post-title entry-hint-parent">Building the Footprints Page: A Technical Deep Dive</h1>
           <div class="post-meta">
-            <span>July 18, 2025</span>
-            &nbsp;· &nbsp;12 min read &nbsp;· &nbsp;Aryan Sharma
+            <span>May 21, 2025</span>
+            &nbsp;· &nbsp;14 min read &nbsp;· &nbsp;Aryan Sharma
           </div>
         </header>
         <div class="toc">
@@ -92,7 +92,7 @@
           <h2 id="the-problem">The Problem: Why I Built This</h2>
           <p>As someone who travels but avoids social media, I needed a way to share my experiences that was:</p>
           <ul>
-            <li><strong>Controlled</strong>: No algorithms deciding who sees what</li>
+            <li><strong>Not Controlled</strong>: No algorithms deciding who sees what</li>
             <li><strong>Performant</strong>: Should work smoothly even on slow connections</li>
             <li><strong>Cost-effective</strong>: Must run within free tier limits</li>
             <li><strong>Visually interesting</strong>: More engaging than a standard photo grid</li>
@@ -141,169 +141,469 @@
 
           <h3>Technical Stack Selection</h3>
           <p>After evaluating libraries, I focused on Globe.gl for its balance of features and ease-of-use. Below is a sample evaluation:</p>
-          <pre><code class="language-javascript">// Sample evaluation criteria
+          <pre><code class="language-javascript">// Evaluation of 3D visualization libraries
 const globeLibraries = [
   {
     name: "Three.js",
-    pros: ["Maximum flexibility", "WebGL powered"],
-    cons: ["Steep learning curve", "Need to build everything"]
+    pros: ["Low-level control", "Customizable shaders", "Massive ecosystem"],
+    cons: ["Requires deep WebGL knowledge", "No built-in globe tools"]
   },
   {
     name: "Globe.gl",
-    pros: ["Purpose-built for globes", "Good documentation"],
-    cons: ["Less customizable", "Dependent on Three.js"]
+    pros: ["Quick to set up", "Great for 3D globes", "Built on Three.js"],
+    cons: ["Limited to globe-centric use cases", "Less control over internals"]
   },
   {
-    name: "Cesium",
-    pros: ["Geospatial features", "High performance"],
-    cons: ["Large bundle size", "Overkill for my needs"]
+    name: "CesiumJS",
+    pros: ["Advanced geospatial features", "Real-world terrain data"],
+    cons: ["Heavy bundle size", "Too complex for a visual photo journal"]
   }
 ];
-// Chose Globe.gl for its balance of features and ease of use</code></pre>
 
+// Final decision
+const selectedLibrary = "Globe.gl"; // Balanced, quick to deploy, visually striking
+</code></pre>
+<p>Globe.gl was the right fit for this project’s goal — an interactive, aesthetic globe experience with minimal boilerplate and a focused API. It got me building cool stuff faster.</p>
           <h2 id="globe-implementation">Globe Implementation Details</h2>
           <h3>Initial Setup</h3>
           <p>The basic Globe.gl initialization includes configuring camera settings, lighting, and textures. (This is where my actual initialization code would go.)</p>
-          <pre><code class="language-javascript">// [PLACEHOLDER: Insert your actual initialization code here]
-// Example: setting camera position, lighting, and base textures
-// const globe = Globe()(document.getElementById('globe'))
-//   .globeImageUrl('path/to/earth.jpg')
-//   .backgroundImageUrl('path/to/bg.jpg');
-// globe.controls().autoRotate = true;</code></pre>
-
+          <pre><code class="language-javascript">const globe = Globe()(document.getElementById('globeViz'))
+  .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+  .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+  .onGlobeReady(() => {
+    globe.controls().target.set(0, 0, 0);            // Look at center of globe
+    globe.camera().position.set(0, 0, 330);          // Pull camera back for overview
+    globe.controls().update();                       // Apply changes
+  });
+</code></pre>
+<p>This configuration disables auto-rotation (unlike most examples), providing a stable and intentional starting point for user-driven navigation.</p>
           <h3>Marker System</h3>
           <p>This section handles how yellow dots (for cities) and red pins (for attractions) are created, as well as their event handlers for interactivity.</p>
-          <pre><code class="language-javascript">
-// [PLACEHOLDER: Insert your marker creation code]
-// Example: Create spheres for cities and switch markers on zoom threshold
-// function createMarkers(data) {
-//   data.forEach(location => {
-//     // Create yellow dot
-//     // On zoom, convert to red pin
-//   });
-// }</code></pre>
+          <pre><code class="language-javascript">function renderMarkers(dataSet) {
+  globe.htmlElementsData(dataSet)
+    .htmlLat(d => d.lat)
+    .htmlLng(d => d.lng)
+    .htmlElement(d => {
+      const el = document.createElement('div');
+      el.className = d.icon === 'circle' ? 'city-marker' : 'place-marker';
+      el.dataset.tooltip = d.name;
 
+      el.onclick = () => showGallery(d);
+
+      el.onmouseenter = () => {
+        tooltipTimeout = setTimeout(() => {
+          const rect = el.getBoundingClientRect();
+          tooltip.textContent = d.name;
+          tooltip.style.left = `${rect.left + rect.width / 2}px`;
+          tooltip.style.top = `${rect.top + 100}px`;
+          tooltip.style.opacity = '1';
+        }, 300);
+      };
+
+      el.onmouseleave = () => {
+        clearTimeout(tooltipTimeout);
+        tooltip.style.opacity = '0';
+      };
+
+      return el;
+    });
+}
+
+// Zoom logic: switch between city dots and red pins
+globe.controls().addEventListener('change', () => {
+  const zoom = globe.camera().position.length();
+  const threshold = 110;
+
+  if (zoom < threshold && currentMode !== 'place') {
+    renderMarkers(placeMarkers);
+    currentMode = 'place';
+  } else if (zoom >= threshold && currentMode !== 'city') {
+    renderMarkers(cityMarkers);
+    currentMode = 'city';
+  }
+});
+</code></pre>
+<p>This approach keeps the globe clean at first glance and reveals details only when the user intentionally zooms in — improving usability and performance while maintaining visual clarity.</p>
           <h2 id="data-structure">Data Architecture</h2>
           <p>The hierarchical data structure supports nested locations, multiple photos per location, and metadata such as dates and descriptions.</p>
-          <pre><code class="language-javascript">
-// [PLACEHOLDER: Insert your actual data structure]
-// Example structure:
-// const data = {
-//   country: "France",
-//   cities: [{
-//     name: "Paris",
-//     attractions: [{
-//       name: "Eiffel Tower",
-//       photos: [{ url: "path/to/photo.jpg", date: "2025-06-15" }]
-//     }]
-//   }]
-// };</code></pre>
+          <pre><code class="language-javascript">[
+  {
+    "name": "Chicago",
+    "lat": 41.8827,
+    "lng": -87.6233,
+    "city": true,
+    "places": [
+      {
+        "name": "The Bean",
+        "lat": 41.8826,
+        "lng": -87.6233,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747414654/IMG-20250516-WA0004_dbslyh.jpg",
+            "date": "2024-11-30"
+          },
+          {
+          "url": "https://res.cloudinary.com/.....", //put the real URL here
+            "date": "2024-11-30"
+          }
+        ]
+      },
+      {
+        "name": "Navy Pier",
+        "lat": 41.8916,
+        "lng": -87.6079,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/......", //put the real URL here
+            "date": "2024-11-30"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "Navy_pier"
+      }
+    ]
+  }
+]</code></pre>
 
-          <h3>Data Generation Process</h3>
-          <p>Steps include extracting EXIF data, reverse geocoding, grouping photos, and generating optimized JSON used by the page.</p>
-          <pre><code class="language-javascript">
-// [PLACEHOLDER: Insert your photo processing script]
-// Example:
-// function processPhotos(rawPhotos) {
-//   // Extract GPS, group by location, upload to Cloudinary, generate JSON
-// }</code></pre>
+          <h3>Building Scalable Photo Albums with Cloudinary</h3>
+          <p>Creating the JSON files for each album manually would be a huge pain, especially with hundreds of photos! Instead of copying and pasting each link, I wrote a simple <strong>Node.js script</strong> to automate the process. This script connects to Cloudinary, fetches all the images within a specified folder, and then generates an optimized JSON file containing the <code>thumbnail</code> and <code>full-size</code> image URLs, along with the <code>capture date</code>.</p>
+          <p>Here's the code I used:</p>
+          <pre><code class="language-javascript">// data-dumper.js
+const fs = require('fs');
+const path = require('path');
+const cloudinary = require('cloudinary').v2;
 
-          <h2 id="bandwidth-optimization">Bandwidth Optimization Deep Dive</h2>
+// Cloudinary credentials (PLACEHOLDER: Replace with your actual credentials)
+cloudinary.config({
+  cloud_name: 'YOUR_CLOUD_NAME',
+  api_key: 'YOUR_API_KEY',
+  api_secret: 'YOUR_API_SECRET'
+});
+
+// Folder path & JSON album name
+const albumFolder = 'photo dump/Penn station'; // The folder on Cloudinary
+const albumId = 'Penn_station'; // The desired ID for your album JSON file
+const outputDir = path.join(__dirname, 'data', 'albums'); // Where the JSON file will be saved
+const outputFile = path.join(outputDir, `${albumId}.json`);
+const capturedDate = '2025-05-12'; // Date associated with this album
+
+// Ensure output directory exists
+fs.mkdirSync(outputDir, { recursive: true });
+
+async function fetchAllImages() {
+  let allResources = [];
+  let nextCursor = undefined;
+
+  do {
+    const result = await cloudinary.search
+      .expression(`folder:"${albumFolder}"`)
+      .sort_by('public_id', 'asc')
+      .max_results(500)      // Fetch up to 500 images per request
+      .next_cursor(nextCursor)    // Use the cursor for pagination
+      .execute();
+
+    allResources.push(...result.resources);
+    nextCursor = result.next_cursor;
+    console.log(`Workspaceed ${allResources.length} / ~? images so far…`);
+  } while (nextCursor); // Keep fetching until no more images
+
+  return allResources;
+}
+
+(async () => {
+  try {
+    const resources = await fetchAllImages();
+    console.log(`✅ Total images found: ${resources.length}`);
+
+    // Map the Cloudinary resources to your desired JSON format
+    const albumJson = resources.map(img => ({
+      thumb: cloudinary.url(img.public_id, {
+        width: 300,
+        crop: 'fill',
+        format: 'jpg',
+        quality: 'auto'
+      }),
+      full: img.secure_url,
+      captured: capturedDate
+    }));
+
+    // Write the generated JSON to a file
+    fs.writeFileSync(outputFile, JSON.stringify(albumJson, null, 2));
+    console.log(`🚀 Album JSON written to ${outputFile}`);
+  } catch (err) {
+    console.error('❌ Error fetching images:', err);
+  }
+})();
+</code></pre>
+          <p>It's important to note that the <strong>data structure for individual album JSONs is distinct from the main location JSONs</strong>. While location data focuses on geographical points and their directly associated images, album JSONs are designed to manage collections of photos from a specific event or series.</p>
+          <p>To seamlessly integrate albums with specific locations, I've implemented a tagging system within the location JSON files. If a location includes an "albumId": "json_name" tag, the client-side application recognizes that a full album is available. This triggers the dynamic display of a "View Full Album" button for that location. Clicking the button fetches the corresponding album JSON and then loads the associated photos from Cloudinary on demand—without preloading them. This strategy keeps the initial page load fast while allowing users to explore full photo albums only when they choose to.</p>
+
+          <h2 id="bandwidth-optimization">Bandwidth Optimization</h2>
           <h3>Cloudinary Configuration</h3>
           <p>My Cloudinary configuration uses transformation presets for thumbnails, medium, and HD images. Below is a sample:</p>
-          <pre><code class="language-javascript">
-// [PLACEHOLDER: Insert your actual Cloudinary setup]
-// Example URLs with transformations for thumbnail, medium, and HD versions.
+          <pre><code class="language-javascript">// Cloudinary URL Helpers
+function getThumbUrl(url, width = 200) {
+  return url ? url.replace('/upload/', `/upload/c_fill,w_${width},dpr_auto,f_auto,q_auto/`) : '';
+}
+
+function getFullUrl(url, maxWidth = 1200) {
+  return url ? url.replace('/upload/', `/upload/c_limit,w_${maxWidth},dpr_auto,f_auto,q_auto/`) : '';
+}
+
+function getHDUrl(url) {
+  // Removes transformation to get original HD image
+  return url.replace(/\/upload\/[^/]+\//, '/upload/');
+}
 </code></pre>
 
           <h3>Loading Sequence Logic</h3>
           <p>This workflow shows initial thumbnail loading, upgrading image quality on click or hover, and caching the HD version.</p>
-          <pre><code class="language-javascript">
-// [PLACEHOLDER: Insert your full loading logic]
-// Example: Using IntersectionObserver for lazy loading and caching HD images in localStorage.
+          <pre><code class="language-javascript">function updatePhotoViewer() {
+  const img = document.getElementById('viewer-img');
+  const url = photoArray[currentPhotoIndex];
+  const hdCookie = 'hd_loaded_' + btoa(url);
+  const cachedHD = localStorage.getItem('hd_' + url);
+
+  // Show cached HD if already loaded
+  if (getCookie(hdCookie) === 'true' && cachedHD) {
+    img.src = cachedHD;
+    return;
+  }
+
+  // Load optimized version first
+  img.onload = () => {
+    setTimeout(() => {
+      document.getElementById('load-hd-btn').style.display = 'block';
+    }, 4000);
+  };
+  img.src = getFullUrl(url); // loads compressed version
+}
+
+function loadHDImage() {
+  const url = photoArray[currentPhotoIndex];
+  const rawHDUrl = url.replace(/\/upload\/[^/]+\//, '/upload/');
+  const hdCookie = 'hd_loaded_' + btoa(rawHDUrl);
+  const cacheKey = 'hd_' + rawHDUrl;
+
+  fetch(rawHDUrl)
+    .then(res => res.blob())
+    .then(blob => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result;
+        localStorage.setItem(cacheKey, dataUrl);
+        setCookie(hdCookie, 'true', 365);
+        document.getElementById('viewer-img').src = dataUrl;
+      };
+      reader.readAsDataURL(blob);
+    });
+}
+
 </code></pre>
+<p>Initially, an optimized version of the image is loaded using Cloudinary transformations. After a few seconds, users are prompted to upgrade to HD. If HD is requested, it's fetched, cached in localStorage, and future visits skip reloading it by checking a persistent cookie.</p>
 
           <h3>Performance Metrics</h3>
           <p>Before and after optimization metrics:</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Metric</th>
-                <th>Original</th>
-                <th>Optimized</th>
-                <th>Improvement</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Initial Load Size</td>
-                <td>4.2MB</td>
-                <td>320KB</td>
-                <td>92% reduction</td>
-              </tr>
-              <tr>
-                <td>Time to Interactive</td>
-                <td>5.8s</td>
-                <td>1.2s</td>
-                <td>79% faster</td>
-              </tr>
-              <tr>
-                <td>Bandwidth/month</td>
-                <td>~80GB</td>
-                <td>~18GB</td>
-                <td>78% savings</td>
-              </tr>
-            </tbody>
-          </table>
+          <div style="position:relative; height:300px; width:100%; max-width:800px;">
+             <canvas id="performanceChart"></canvas>
+          </div>
 
           <h2 id="security-layer">Security Layer: Iron Gate System</h2>
           <h3>Architecture Diagram</h3>
           <p>An overview of the client-side security layers:</p>
           <pre><code class="language-markdown">
-// [PLACEHOLDER: Insert your architecture diagram here]
-// Could be ASCII art or a descriptive overview of rate limiting and fingerprinting.
+┌──────────────────────────────┐
+│      USER REQUEST ARRIVES    │
+└────────────┬─────────────────┘
+             ▼
+   ➤ Refresh Counter via Cookie
+   ➤ Warning Threshold Logic
+   ➤ Temporary Ban if Abused
+   ➤ Trap Button for Bots (Honeypot)
+   ➤ Headless/Automation Detection
+   ➤ FingerprintJS2 Browser Hash
+   ➤ Countdown Delay (4 seconds)
+             ▼
+┌──────────────────────────────┐
+│     VERIFIED → ALBUM PAGE    │
+└──────────────────────────────┘
 </code></pre>
+<h5>Key Techniques Used:</h5>
+<p>This early version of my IronGate™ system was designed to be <strong>lenient</strong> by default — I didn’t want any legitimate users getting blocked, and I didn’t want to delay progress by over-engineering this security layer in the first iteration.</p>
+<ul>
+  <li><strong>Honeypot Trap</strong><br>
+    An invisible button is placed on the page to catch bots that auto-click every element.</li>
+
+  <li><strong>Refresh Spam Logger</strong><br>
+    Tracks page refresh timestamps using cookies. More than 10 refreshes within 2 minutes triggers warnings. After 3 warnings, a 60-second temporary ban is issued automatically.</li>
+
+  <li><strong>Fingerprinting</strong><br>
+    Uses FingerprintJS2 to uniquely identify the user’s browser and set a verification cookie to grant access.</li>
+
+  <li><strong>Countdown Timer</strong><br>
+    Adds a short 4-second delay before allowing access to simulate a human-like wait, blocking impatient scripts and bots.</li>
+
+  <li><strong>Lenient by Design</strong><br>
+    At this early stage, I’m intentionally avoiding harsh restrictions or rate-limiting. Instead, the system favors gentle warnings and short bans to ensure a smooth experience for genuine users.</li>
+</ul>
+
 
           <h3>Implementation Details</h3>
-          <pre><code class="language-javascript">
-// [PLACEHOLDER: Insert full IronGate implementation]
-// Example: class IronGate { ... }
+          <pre><code class="language-javascript">// IronGate: Early-Stage Protection Layer (Lenient Mode)
+
+(function IronGate() {
+  const COOLDOWN_MS = 2 * 60 * 1000; // 2 minutes window
+  const MAX_REFRESHES = 10;
+  const WARNING_THRESHOLD = 3;
+  const BAN_DURATION_MS = 60 * 1000; // 60 seconds
+
+  const getCookie = (name) => {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+  };
+
+  const setCookie = (name, value, seconds) => {
+    const expires = new Date(Date.now() + seconds * 1000).toUTCString();
+    document.cookie = \`\${name}=\${encodeURIComponent(value)}; path=/; expires=\${expires}; SameSite=Strict\`;
+  };
+
+  const now = Date.now();
+
+  // Check if user is temporarily banned
+  const banUntil = parseInt(getCookie("IronGateBanUntil") || "0", 10);
+  if (!isNaN(banUntil) && now < banUntil) {
+    document.body.innerHTML = "<h2>Access Temporarily Restricted</h2><p>Please wait and try again later.</p>";
+    throw new Error("User is currently under a temporary ban.");
+  }
+
+  // Refresh abuse detection
+  const refreshLogRaw = getCookie("IronGateRefreshLog");
+  const refreshLog = refreshLogRaw ? JSON.parse(atob(refreshLogRaw)) : [];
+  const recentLog = refreshLog.filter(timestamp => now - timestamp < COOLDOWN_MS);
+
+  recentLog.push(now);
+  setCookie("IronGateRefreshLog", btoa(JSON.stringify(recentLog)), 120); // Expires in 2 minutes
+
+  if (recentLog.length > MAX_REFRESHES) {
+    let warnings = parseInt(getCookie("IronGateWarnings") || "0", 10);
+    warnings++;
+    setCookie("IronGateWarnings", warnings, 1800); // Store for 30 minutes
+
+    if (warnings >= WARNING_THRESHOLD) {
+      setCookie("IronGateBanUntil", now + BAN_DURATION_MS, 60);
+      document.body.innerHTML = "<h2>Too Many Requests</h2><p>Your access is temporarily blocked due to unusual activity.</p>";
+      throw new Error("Temporary ban triggered.");
+    } else {
+      document.body.innerHTML = \`<h2>Warning \${warnings}</h2><p>Please reduce refresh frequency to avoid temporary suspension.</p>\`;
+      throw new Error("Warning threshold not yet exceeded.");
+    }
+  }
+
+  // Bot behavior trap (honeypot)
+  window.trapTriggered = function () {
+    document.body.innerHTML = "<h2>Access Denied</h2><p>Suspicious automated interaction detected.</p>";
+    throw new Error("Honeypot triggered.");
+  };
+
+  // Fingerprint + verification cookie
+  window.verifyAndRedirect = function () {
+    Fingerprint2.get(components => {
+      const values = components.map(c => c.value);
+      const hash = Fingerprint2.x64hash128(values.join(""), 31);
+      const timestamp = Date.now();
+      const encodedTime = btoa(timestamp.toString()).split("").reverse().join("");
+
+      document.cookie = \`IronGateVerification=1_\${encodedTime}_\${hash}; path=/; max-age=86400; SameSite=Strict\`;
+      localStorage.setItem("IronGateCooldown", timestamp);
+      window.location.href = "album.html";
+    });
+  };
+
+  // Countdown timer for natural delay
+  let seconds = 4;
+  const countdownEl = document.getElementById("countdown");
+  countdownEl.textContent = seconds;
+
+  const timer = setInterval(() => {
+    seconds--;
+    countdownEl.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(timer);
+      verifyAndRedirect();
+    }
+  }, 1000);
+
+})();
 </code></pre>
+<p>This early-stage implementation of the IronGate system applies client-side verification to mitigate spam, bots, and refresh abuse. It uses cookies to log refreshes, fingerprinting for soft identification, and a short countdown delay. The current setup is intentionally lenient to avoid blocking real users during the initial rollout phase.</p>
+
           
           <h2 id="debugging-challenges">Debugging Challenges</h2>
           <h3>Camera Control Issues</h3>
           <p>Discusses zoom level adjustments and smooth transitions with before/after examples.</p>
-          <pre><code class="language-javascript">
-// [PLACEHOLDER: Insert problematic camera code and fixes]
-// Example: Fixing jitter in zoom transitions.
+          <pre><code class="language-javascript">// Before (jittery behavior, auto zoom from library defaults)
+const globe = Globe()(document.getElementById('globeViz'));
+
+// After (manual camera smoothing on load)
+const globe = Globe()(document.getElementById('globeViz'))
+  .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+  .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+  .onGlobeReady(() => {
+    globe.controls().target.set(0, 0, 0);      // stabilize center
+    globe.camera().position.set(0, 0, 330);    // fixed zoom distance
+    globe.controls().update();                 // apply changes
+  });
 </code></pre>
-          
+<p>This small tweak greatly improved user experience by making zoom levels predictable and consistent, which was essential for triggering pin switches between cities and locations.</p>
+
           <h3>Memory Leaks</h3>
-          <p>Details on detecting and resolving resource retention issues.</p>
-          <pre><code class="language-javascript">
-// [PLACEHOLDER: Show leak example and fix]
-// Example: Clearing timers and removing event listeners when not needed.
+          <p>While testing the image viewer, I noticed increased memory usage after navigating through multiple photos quickly. The issue was tied to <code>setTimeout</code> and <code>onload</code> handlers that weren’t always cleared properly, especially when users clicked rapidly.
+
+To prevent leaked timers and avoid unnecessary DOM buildup, I cleaned up event listeners and timeouts in both the HD loading and viewer update logic.</p>
+          <pre><code class="language-javascript">// Before (risk of orphaned timeouts if user navigates away quickly)
+img.onload = () => {
+  setTimeout(() => {
+    document.getElementById('load-hd-btn').style.display = 'block';
+  }, 4000);
+};
+
+// After (clears any existing timeout before setting a new one)
+clearTimeout(showHDButtonTimeout);
+img.onload = () => {
+  showHDButtonTimeout = setTimeout(() => {
+    const btn = document.getElementById('load-hd-btn');
+    if (btn) btn.style.display = 'block';
+  }, 4000);
+};
 </code></pre>
-          
+<p>Additionally, onload fallbacks were added to force cleanup in edge cases where events never fired:</p>
+          <pre><code class="language-javascript">// Fallback cleanup if image doesn't trigger onload (rare, but possible)
+setTimeout(() => {
+  if (!rendered) {
+    cleanupLoadingUI();
+    handleHDLoaded(rawUrl);
+  }
+}, 5000);</code></pre>
+<p>By aggressively clearing timeouts and safely checking element presence, I ensured the viewer remains lightweight and leak-free over long usage sessions.</p>            
+            
           <h2 id="future-plans">Future Improvements</h2>
           <h3>Planned Enhancements</h3>
-          <pre><code class="language-markdown">
-1. [ ] IndexedDB for larger cache
-2. [ ] WebP/AVIF support
-3. [ ] Network-aware loading
-4. [ ] Offline capabilities
-5. [ ] User upload system for friends
+          <pre><code class="language-markdown">1. [ ] IndexedDB for scalable offline cache 
+2. [ ] Improved UX on the 3D globe (smooth transitions, tooltips) 
+3. [ ] Guided demos showing how to explore the globe 
+4. [ ] Captions and descriptions for all uploaded photos 
+5. [ ] Just... building cool stuff
 </code></pre>
           <h3>Experimental Features</h3>
           <p>Ideas currently under exploration:</p>
-          <pre><code class="language-javascript">
-// [PLACEHOLDER: Insert experimental code snippets]
-// Examples: WebGL shader experiments or alternative data structures.
-</code></pre>
+          <pre><code class="language-javascript">1. [ ] Making the globe texture more HD and sharp 
+2. [ ] Brainstorming unique visual effects tied to zoom levels 
+3. [ ] Redundant photo hosting with automatic fallback if one server fails or hits bandwidth cap 
+4. [ ] Traffic-handling algorithms to manage surges or abuse gracefully </code></pre>
           
           <h2>Conclusion</h2>
-          <p>This project taught me valuable lessons about progressive enhancement, efficient resource management, and balancing features with performance. The complete source is available in my [PLACEHOLDER: GitHub repo link]. Feel free to borrow ideas, but please credit appropriately.</p>
-          <p>Now, as promised, I'm off to enjoy that spaghetti in Paris. If you have questions, find me on [PLACEHOLDER: your contact method].</p>
+          <p>This project has already taught me a great deal — from progressive enhancement to smart resource management and striking a balance between performance and visual richness. As the build evolves, I’m continuing to learn and iterate. The full source code will be published on my GitHub once the project reaches a stable release.</p>
+          <p>Now, as promised, I’m off to enjoy some well-earned spaghetti in Paris — special thanks to my friend Raphaël for making it happen. If you have questions or ideas, feel free to reach out at dev-aryan@aboutsharma.com or aryan@aboutsharma.com.</p>
         </div>
         <footer class="post-footer">
           <div class="post-tags">
@@ -323,7 +623,7 @@ const globeLibraries = [
     </main>
     <footer class="footer">
       <span>© 2025 Aryan Sharma</span>
-      <span class="footer-credits">Built from scratch with too much coffee</span>
+      <span class="footer-credits"> ~ Built from scratch ~</span>
     </footer>
     <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor">
@@ -408,5 +708,75 @@ const globeLibraries = [
           }
       });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Initial Load Size', 'Time to Interactive', 'Bandwidth/Month'],
+        datasets: [
+          {
+            label: 'Original',
+            data: [4.2, 5.8, 80],
+            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'Optimized',
+            data: [0.32, 1.2, 18],
+            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            title: { display: true, text: 'Metric' },
+            stacked: false,
+            ticks: {
+              color: getComputedStyle(document.body).getPropertyValue('--primary') || '#000'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Value (MB / s / GB)' },
+            ticks: {
+              color: getComputedStyle(document.body).getPropertyValue('--primary') || '#000'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: getComputedStyle(document.body).getPropertyValue('--primary') || '#000'
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.dataset.label;
+                const value = context.parsed.y;
+                const category = context.label;
+                if (category.includes('Load')) return `${label}: ${value} MB`;
+                if (category.includes('Interactive')) return `${label}: ${value} s`;
+                if (category.includes('Bandwidth')) return `${label}: ${value} GB`;
+                return `${label}: ${value}`;
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+</script>
+    
   </body>
 </html>
