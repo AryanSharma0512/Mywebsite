@@ -143,6 +143,52 @@
         ],
         "icon": "marker",
         "albumId": "french_museum"
+      },
+      {
+        "name": "Place des Vosges",
+        "lat": 48.855470,
+        "lng": 2.365913,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747934704/IMG-20250522-WA0086_mrc65i.jpg",
+            "date": "2025-05-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747934689/IMG-20250522-WA0092_cbt7j5.jpg",
+            "date": "2025-05-19"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747934848/IMG-20250522-WA0084_ymckx4.jpg",
+            "date": "2025-05-19"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "Place_des_vosges"
+      },
+      {
+        "name": "Notre-Dame Cathedral",
+        "lat": 48.852710,
+        "lng": 2.349727,
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747933711/IMG-20250522-WA0059_p1vtrr.jpg",
+            "date": "2025-05-22"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747933560/IMG-20250522-WA0069_ebeckm.jpg",
+            "date": "2025-05-22"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747933545/IMG-20250522-WA0081_fkihet.jpg",
+            "date": "2025-05-22"
+          },
+          {
+            "url": "https://res.cloudinary.com/dudip2vsk/image/upload/v1747933544/IMG-20250522-WA0064_w9cfog.jpg",
+            "date": "2025-05-22"
+          }
+        ],
+        "icon": "marker",
+        "albumId": "Notre_dame"
       }
     ]
   },

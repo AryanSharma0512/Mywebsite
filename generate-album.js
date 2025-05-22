@@ -11,8 +11,8 @@ cloudinary.config({
 });
 
 // 📂 Folder path & JSON album name
-const albumFolder  = 'photo dump/Penn station';
-const albumId      = 'Penn_station';
+const albumFolder  = 'photo dump/Place des vosges';
+const albumId      = 'Place_des_vosges';
 const outputDir    = path.join(__dirname, 'data', 'albums');
 const outputFile   = path.join(outputDir, `${albumId}.json`);
 const capturedDate = '2025-05-12';
