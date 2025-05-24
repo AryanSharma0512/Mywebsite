@@ -1795,3 +1795,12 @@ article figure img {
     transform: rotate(-360deg);
   }
 }
+
+a img {
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+}
