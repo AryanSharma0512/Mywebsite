@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en" dir="auto">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="robots" content="index, follow">
+    <title>SQL Backup, Compression & Notification | Aryan Sharma</title>
+    <link rel="stylesheet" href="../css/blogstyle.css">
+    <link rel="icon" href="images/favicon.png">
+    <meta name="theme-color" content="#2e2e33">
+    <meta name="msapplication-TileColor" content="#2e2e33">
+    <noscript>
+      <style>
+        #theme-toggle, .top-link {
+          display: none;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body id="top">
+    <script>
+      localStorage.getItem("pref-theme") === "dark" 
+        ? document.body.classList.add("dark") 
+        : localStorage.getItem("pref-theme") === "light" 
+          ? document.body.classList.remove("dark") 
+          : window.matchMedia("(prefers-color-scheme: dark)").matches && document.body.classList.add("dark")
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <a href="../index.html" accesskey="h" title="Aryan Sharma Blog (Alt + H)">Aryan Sharma</a>
+          <div class="logo-switches">
+            <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+              <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+              </svg>
+              <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/>
+                <line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <ul id="menu">
+          <li><a href="../index.html" title="home">Home</a></li>
+          <li><a href="../resume.html" title="resume">Resume</a></li>
+          <li><a href="../album.html" title="Footprints">Footprints</a></li>
+          <li><a href="../blog.html" title="blog">Blog</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+      <article class="post-single">
+        <header class="post-header">
+          <div class="breadcrumbs">
+            <a href="blog.html">Blog</a> / <span>SQL Backup System</span>
+          </div>
+          <h1 class="post-title">End-to-End SQL Backup, Compression, and Notification System</h1>
+          <div class="post-meta">
+            <span>May 15, 2025</span> · 10 min read · Aryan Sharma
+          </div>
+        </header>
+        <div class="post-content">
+          <h2>Step 1: Batch Dump & Compression</h2>
+<p>
+I wrote a rich batch script that dumps all non-system MySQL databases into a temp folder, zips them using PowerShell’s <code>Compress-Archive</code>, and appends a timestamp for clarity. The script also checks if MySQL is running before proceeding and logs all activity for review.
+</p>
+
+<pre><code class="language-batch">@echo off
+setlocal enabledelayedexpansion
+
+:: CONFIG
+set MYSQL_BIN=C:\xampp\mysql\bin
+set BACKUP_DIR=C:\xampp\mysql-backup
+set TEMP_DIR=%TEMP%\mysql_backup_temp
+set TIMESTAMP=%DATE:~10,4%-%DATE:~4,2%-%DATE:~7,2%_%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
+set ZIP_PATH=%BACKUP_DIR%\mysql_backup_%TIMESTAMP%.zip
+set LOGFILE=%TEMP%\mysql_backup_log.txt
+
+:: Fix leading space in hour
+if "%TIME:~0,1%"==" " set TIMESTAMP=%DATE:~10,4%-%DATE:~4,2%-%DATE:~7,2%_0%TIME:~1,1%%TIME:~3,2%%TIME:~6,2%
+
+:: Create temp and backup dirs
+if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%"
+if exist "%TEMP_DIR%" rmdir /s /q "%TEMP_DIR%"
+mkdir "%TEMP_DIR%"
+
+:: Check MySQL running
+tasklist /FI "IMAGENAME eq mysqld.exe" | find /I "mysqld.exe" >nul
+if errorlevel 1 (
+    echo MySQL not running. Exiting.
+    exit /b 1
+)
+
+:: Dump all non-system databases
+for /f "skip=1 tokens=*" %%D in ('"%MYSQL_BIN%\mysql.exe" -u root --skip-password -e "SHOW DATABASES;"') do (
+    if "%%D" neq "information_schema" if "%%D" neq "performance_schema" if "%%D" neq "mysql" if "%%D" neq "sys" (
+        "%MYSQL_BIN%\mysqldump.exe" -u root --skip-password --databases %%D > "%TEMP_DIR%\%%D.sql"
+    )
+)
+
+:: Zip the dump
+powershell -Command "Compress-Archive -Path '%TEMP_DIR%\*' -DestinationPath '%ZIP_PATH%'"
+</code></pre>
+
+
+          <h2>Step 2: Upload with rclone</h2>
+<p>
+Once the SQL dump is zipped, I use <a href="https://rclone.org" target="_blank">rclone</a> to upload the archive to Google Drive. The destination folder is named <strong>Important Backup → SQL DATA</strong>. This step ensures a daily off-site copy of the database exists outside my local machine.
+</p>
+
+<pre><code class="language-batch">:: Upload ZIP to Google Drive using rclone
+rclone copy "%ZIP_PATH%" gdrive:"Important Backup/SQL DATA"
+</code></pre>
+
+          <h2>Step 3: Email Notifications</h2>
+<p>
+To make the backup system aware of its own success or failure, I added email alerts using PowerShell. Two scripts handle the logic: one for successful runs and one for failures. They send notifications via Gmail’s SMTP server using app passwords and TLS encryption.
+</p>
+
+<pre><code class="language-powershell"># email_success.ps1 (simplified)
+$msg = New-Object Net.Mail.MailMessage
+$msg.From = "your@email.com"
+$msg.To.Add("your+alerts@email.com")
+$msg.Subject = "✅ MySQL Backup Completed"
+$msg.Body = "The scheduled backup completed successfully at $timestamp."
+
+$smtp = New-Object Net.Mail.SmtpClient("smtp.gmail.com", 587)
+$smtp.EnableSsl = $true
+$smtp.Credentials = New-Object System.Net.NetworkCredential("user", "secure-app-password")
+$smtp.Send($msg)
+
+# email_fail.ps1 (simplified)
+$msg = New-Object Net.Mail.MailMessage
+$msg.From = "your@email.com"
+$msg.To.Add("your+alerts@email.com")
+$msg.Subject = "❌ MySQL Backup FAILED"
+$msg.Body = "The backup failed at $timestamp. Log file attached if available."
+
+if (Test-Path $logPath) {
+    $attachment = New-Object Net.Mail.Attachment($logPath)
+    $msg.Attachments.Add($attachment)
+}
+
+$smtp = New-Object Net.Mail.SmtpClient("smtp.gmail.com", 587)
+$smtp.EnableSsl = $true
+$smtp.Credentials = New-Object System.Net.NetworkCredential("user", "secure-app-password")
+$smtp.Send($msg)
+</code></pre>
+
+<h2>Error Handling & Cleanup</h2>
+<p>
+Once the backup and upload steps complete, the script checks <code>%ERRORLEVEL%</code> to determine whether the process was successful. Based on this result, it triggers either the success or failure email script with the latest log file attached. Regardless of outcome, all temporary files and directories are removed to keep the system tidy and avoid residual clutter.
+</p>
+
+<pre><code class="language-batch">:: Trigger appropriate email notification
+IF %ERRORLEVEL% EQU 0 (
+    powershell -ExecutionPolicy Bypass -File "%EMAILSCRIPT_SUCCESS%" -LogFile "%LOGFILE%"
+) ELSE (
+    powershell -ExecutionPolicy Bypass -File "%EMAILSCRIPT_FAIL%" -LogFile "%LOGFILE%"
+)
+
+:: Clean up temporary data
+rmdir /s /q "%TEMP_DIR%"
+del "%ZIP_PATH%"
+</code></pre>
+
+          <h2>Scheduled Automation</h2>
+          <p>
+          The entire backup system is triggered automatically each night at <strong>11:59 PM</strong> using Windows Task Scheduler. The job is configured with the “Run task as soon as possible after a scheduled start is missed” option enabled — ensuring no day is skipped, even if the machine was off at the scheduled time.
+          </p>
+
+          <h2>Conclusion</h2>
+          <p>
+          What began as a reaction to unexpected data loss has evolved into a complete, hands-free solution for daily SQL backups. Built entirely with native Windows tools, PowerShell, and <em>rclone</em>, it delivers reliability without third-party overhead. The result is peace of mind — knowing my databases are safe, versioned, and offsite every single day.
+          </p>
+
+          <h2>Citations</h2>
+          <p>
+          Portions of the backup system — including batch scripting, PowerShell email automation, and error handling logic — were developed with the assistance of AI.
+          </p>
+          <p>OpenAI. (2025). ChatGPT (April 2025 version) [Large language model]. <a href="https://chat.openai.com">https://chat.openai.com</a></p>
+
+          <h2>Author’s Note</h2>
+          <p>I had zero prior experience in scripting. I simply wanted to protect my data, and this system is the result of clear goals, AI support, and iterative learning.</p>
+
+          <p>Thanks for reading.<br>
+          Aryan Sharma<br>
+          <a href="mailto:dev-aryan@aboutsharma.com">dev-aryan@aboutsharma.com</a>,
+          <a href="mailto:aryan@aboutsharma.com">aryan@aboutsharma.com</a>,
+          <a href="mailto:aryan4hills@gmail.com">aryan4hills@gmail.com</a></p>
+        </div>
+        <footer class="post-footer">
+          <div class="post-tags">
+            <a href="#">#mysql</a>
+            <a href="#">#automation</a>
+            <a href="#">#powershell</a>
+            <a href="#">#backup</a>
+          </div>
+        </footer>
+      </article>
+    </main>
+    <footer class="footer">
+      <span>© 2025. Built from scratch by Aryan Sharma.</span><span class="footer-credits"> (Style adapted from <a href="https://github.com/adityatelange/hugo-PaperMod" target="_blank">hugo-papermod</a>)</span>
+    </footer>
+    <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor">
+        <path d="M12 6H0l6-6z"/>
+      </svg>
+    </a>
+    <script>
+      let menu = document.getElementById("menu");
+      if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function() {
+          localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(e => {
+        e.addEventListener("click", function(e) {
+          e.preventDefault();
+          var t = this.getAttribute("href").substr(1);
+          if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+             document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView();
+          } else {
+             document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({ behavior: "smooth" });
+          }
+          t === "top" ? history.replaceState(null, null, " ") : history.pushState(null, null, `#${t}`);
+        });
+      });
+    </script>
+    <script>
+      var mybutton = document.getElementById("top-link");
+      window.onscroll = function() {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+          mybutton.style.visibility = "visible";
+          mybutton.style.opacity = "1";
+        } else {
+          mybutton.style.visibility = "hidden";
+          mybutton.style.opacity = "0";
+        }
+      }
+    </script>
+    <script>
+      document.getElementById("theme-toggle").addEventListener("click", () => {
+        if(document.body.classList.contains("dark")) {
+          document.body.classList.remove("dark");
+          localStorage.setItem("pref-theme", "light");
+        } else {
+          document.body.classList.add("dark");
+          localStorage.setItem("pref-theme", "dark");
+        }
+      });
+    </script>
+    <script>
+      document.querySelectorAll("pre > code").forEach(e => {
+          const container = e.parentNode.parentNode;
+          const copyBtn = document.createElement("button");
+          copyBtn.classList.add("copy-code");
+          copyBtn.innerHTML = "copy";
+          function showCopied() {
+              copyBtn.innerHTML = "copied!";
+              setTimeout(() => { copyBtn.innerHTML = "copy"; }, 2000);
+          }
+          copyBtn.addEventListener("click", () => {
+              if("clipboard" in navigator) {
+                  navigator.clipboard.writeText(e.textContent);
+                  showCopied();
+                  return;
+              }
+              const range = document.createRange();
+              range.selectNodeContents(e);
+              const selection = window.getSelection();
+              selection.removeAllRanges();
+              selection.addRange(range);
+              try {
+                  document.execCommand("copy");
+                  showCopied();
+              } catch {}
+              selection.removeRange(range);
+          });
+          if(container.classList.contains("highlight")) {
+              container.appendChild(copyBtn);
+          } else if(container.parentNode.firstChild === container || container.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName === "TABLE") {
+              container.appendChild(copyBtn);
+          }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Initial Load Size', 'Time to Interactive', 'Bandwidth/Month'],
+        datasets: [
+          {
+            label: 'Original',
+            data: [4.2, 5.8, 80],
+            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'Optimized',
+            data: [0.32, 1.2, 18],
+            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            title: { display: true, text: 'Metric' },
+            stacked: false,
+            ticks: {
+              color: getComputedStyle(document.body).getPropertyValue('--primary') || '#000'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Value (MB / s / GB)' },
+            ticks: {
+              color: getComputedStyle(document.body).getPropertyValue('--primary') || '#000'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: getComputedStyle(document.body).getPropertyValue('--primary') || '#000'
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.dataset.label;
+                const value = context.parsed.y;
+                const category = context.label;
+                if (category.includes('Load')) return `${label}: ${value} MB`;
+                if (category.includes('Interactive')) return `${label}: ${value} s`;
+                if (category.includes('Bandwidth')) return `${label}: ${value} GB`;
+                return `${label}: ${value}`;
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
+
